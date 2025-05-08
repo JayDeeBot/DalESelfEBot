@@ -49,7 +49,7 @@ def test_path_extraction():
     # Save the sample image
     cv2.imwrite(os.path.join(output_dir, 'sample_image.png'), image)
     
-    # Visualise the contours directly using OpenCV for debugging
+    # Visualize the contours directly using OpenCV for debugging
     debug_image = cv2.cvtColor(image.copy(), cv2.COLOR_GRAY2BGR)
     contours, _ = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(debug_image, contours, -1, (0, 255, 0), 1)
@@ -60,8 +60,8 @@ def test_path_extraction():
     paths = planner.extract_paths_from_image(image)
     print(f"Extracted {len(paths)} paths")
     
-    # Create and save a visualisation of the paths
-    fig = planner.visualize_paths()
+    # Create and save a visualization of the paths
+    fig = planner.visualize_paths(show_optimisation=False)
     if fig:
         fig.savefig(os.path.join(output_dir, 'extracted_paths.png'))
         plt.close(fig)
@@ -102,7 +102,7 @@ def test_with_real_edge_image(image_path):
     # Save the input image
     cv2.imwrite(os.path.join(output_dir, 'input_image.png'), image)
     
-    # Visualise the contours directly using OpenCV for debugging
+    # Visualize the contours directly using OpenCV for debugging
     debug_image = cv2.cvtColor(image.copy(), cv2.COLOR_GRAY2BGR)
     contours, _ = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(debug_image, contours, -1, (0, 255, 0), 1)
@@ -113,8 +113,8 @@ def test_with_real_edge_image(image_path):
     paths = planner.extract_paths_from_image(image)
     print(f"Extracted {len(paths)} paths")
     
-    # Create and save a visualisation of the paths
-    fig = planner.visualize_paths()
+    # Create and save a visualization of the paths
+    fig = planner.visualize_paths(show_optimisation=False)
     if fig:
         fig.savefig(os.path.join(output_dir, 'extracted_paths_real.png'))
         plt.close(fig)
@@ -187,8 +187,8 @@ def test_coordinate_transformation():
     output_dir = 'output'
     os.makedirs(output_dir, exist_ok=True)
     
-    # Save visualisation of original paths
-    fig_before = planner.visualize_paths()
+    # Save visualization of original paths
+    fig_before = planner.visualize_paths(show_optimisation=False)
     if fig_before:
         fig_before.savefig(os.path.join(output_dir, 'paths_before_transform.png'))
         plt.close(fig_before)
@@ -197,8 +197,8 @@ def test_coordinate_transformation():
     # Transform coordinates
     transformed_paths = planner.transform_coordinates_with_corners(canvas_corners)
     
-    # Save visualisation of transformed paths
-    fig_after = planner.visualize_paths()
+    # Save visualization of transformed paths
+    fig_after = planner.visualize_paths(show_optimisation=False)
     if fig_after:
         fig_after.savefig(os.path.join(output_dir, 'paths_after_transform.png'))
         plt.close(fig_after)
@@ -259,6 +259,47 @@ def test_coordinate_transformation():
     
     return transformed_paths
 
+def test_path_optimisation():
+    """Test path optimisation functionality"""
+    print("\nTesting Path Optimisation")
+    print("------------------------")
+    
+    # Create a path planner instance
+    planner = PathPlanner()
+    
+    # Load or create a test image
+    if os.path.exists("sample_edge_image.png"):
+        image = cv2.imread("sample_edge_image.png", cv2.IMREAD_GRAYSCALE)
+        _, image = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
+    else:
+        image = create_sample_image()
+    
+    # Extract paths
+    planner.extract_paths_from_image(image)
+    print(f"Extracted {len(planner.paths)} paths")
+    
+    # Save visualisation of unoptimised paths
+    output_dir = 'output'
+    os.makedirs(output_dir, exist_ok=True)
+    
+    fig_before = planner.visualize_paths(show_optimisation=False)
+    if fig_before:
+        fig_before.savefig(os.path.join(output_dir, 'paths_before_optimisation.png'))
+        plt.close(fig_before)
+        print(f"Original paths saved to {output_dir}/paths_before_optimisation.png")
+    
+    # Run optimisation
+    planner.optimise_paths()
+    
+    # Save visualisation of optimised paths
+    fig_after = planner.visualize_paths(show_optimisation=True)
+    if fig_after:
+        fig_after.savefig(os.path.join(output_dir, 'paths_after_optimisation.png'))
+        plt.close(fig_after)
+        print(f"Optimised paths saved to {output_dir}/paths_after_optimisation.png")
+    
+    return planner.paths
+
 def main():
     print("Testing Path Planner")
     print("===================")
@@ -278,6 +319,10 @@ def main():
     # Test coordinate transformation
     print("\n--- TESTING COORDINATE TRANSFORMATION ---")
     transformed_paths = test_coordinate_transformation()
+
+    # Test path optimisation
+    print("\n--- TESTING PATH OPTIMISATION ---")
+    optimised_paths = test_path_optimisation()
     
     print("\nTest complete!")
 
