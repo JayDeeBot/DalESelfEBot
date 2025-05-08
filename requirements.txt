@@ -9,6 +9,9 @@
 Pillow>=9.0.0     # For PIL used by rembg and Tkinter GUI
 rembg>=2.0.0      # Background removal library
 onnxruntime>=1.10.0 # Dependency for rembg
+opencv-python  #img process sub-system
+opencv-python-headless
+
 
 # Specific version needed for ROS 2 Humble compatibility
 numpy<2.0,>=1.21.0 # Compatible with ROS Humble and rembg/onnxruntime
