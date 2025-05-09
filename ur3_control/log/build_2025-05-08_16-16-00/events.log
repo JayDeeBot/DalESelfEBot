@@ -1,0 +1,611 @@
+[0.000000] (-) TimerEvent: {}
+[0.000774] (ur3_control) JobQueued: {'identifier': 'ur3_control', 'dependencies': OrderedDict()}
+[0.000911] (ur3_control) JobStarted: {'identifier': 'ur3_control'}
+[0.011467] (ur3_control) JobProgress: {'identifier': 'ur3_control', 'progress': 'cmake'}
+[0.012123] (ur3_control) Command: {'cmd': ['/usr/bin/cmake', '/home/jarred/git/DalESelfEBot/ur3_control', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control'], 'cwd': '/home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_AU:en'), ('USER', 'jarred'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/jarred/ros2_ws/install/img_prc_interface/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/jarred'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('MANAGERPID', '1607'), ('SYSTEMD_EXEC_PID', '1922'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator23558193cd9818af7fe4d2c2f5bd9d00f'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '2690'), ('COLCON_PREFIX_PATH', '/home/jarred/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'jarred'), ('JOURNAL_STREAM', '8:10988'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'jarred'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '1'), ('WINDOWPATH', '2'), ('PATH', '/home/jarred/anaconda3/bin:/opt/ros/humble/bin:/home/jarred/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/jarred-GF62-7RD:@/tmp/.ICE-unix/1899,unix/jarred-GF62-7RD:/tmp/.ICE-unix/1899'), ('INVOCATION_ID', '4a21c842684d4b1e9c2293066d649d18'), ('XDG_MENU_PREFIX', 'gnome-'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('ROS_DOMAIN_ID', '30'), ('AMENT_PREFIX_PATH', '/home/jarred/ros2_ws/install/ur3_localisation:/home/jarred/ros2_ws/install/ur3_control:/home/jarred/ros2_ws/install/img_prc:/home/jarred/ros2_ws/install/img_prc_interface:/home/jarred/ros2_ws/install/dale_integration:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('TERMINATOR_UUID', 'urn:uuid:2e38b849-016f-4cc2-a2e3-73450becc276'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GAZEBO_RESOURCE_PATH', '/usr/share/gazebo-11/'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/home/jarred/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/jarred/ros2_ws/install/img_prc/lib/python3.10/site-packages:/home/jarred/ros2_ws/install/img_prc_interface/local/lib/python3.10/dist-packages:/home/jarred/ros2_ws/install/dale_integration/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/jarred/ros2_ws/install/ur3_localisation:/home/jarred/ros2_ws/install/ur3_control:/home/jarred/ros2_ws/install/img_prc_interface:/home/jarred/ros2_ws/install/img_prc:/home/jarred/ros2_ws/install/dale_integration:/opt/ros/humble')]), 'shell': False}
+[0.093875] (ur3_control) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.099692] (-) TimerEvent: {}
+[0.173535] (ur3_control) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.185305] (ur3_control) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.199781] (-) TimerEvent: {}
+[0.272635] (ur3_control) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.288111] (ur3_control) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.288490] (ur3_control) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.289201] (ur3_control) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.294136] (ur3_control) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.299883] (-) TimerEvent: {}
+[0.400190] (-) TimerEvent: {}
+[0.414349] (ur3_control) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.433237] (ur3_control) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.433734] (ur3_control) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.434604] (ur3_control) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.439957] (ur3_control) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.500286] (-) TimerEvent: {}
+[0.600558] (-) TimerEvent: {}
+[0.700844] (-) TimerEvent: {}
+[0.761240] (ur3_control) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[0.800891] (-) TimerEvent: {}
+[0.860735] (ur3_control) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[0.900984] (-) TimerEvent: {}
+[0.929189] (ur3_control) StdoutLine: {'line': b'-- Found rclcpp: 16.0.11 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[1.001104] (-) TimerEvent: {}
+[1.012599] (ur3_control) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[1.021654] (ur3_control) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[1.036714] (ur3_control) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[1.064219] (ur3_control) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[1.097776] (ur3_control) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[1.101190] (-) TimerEvent: {}
+[1.182738] (ur3_control) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[1.187282] (ur3_control) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[1.201286] (-) TimerEvent: {}
+[1.301633] (-) TimerEvent: {}
+[1.332844] (ur3_control) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[1.372624] (ur3_control) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[1.401807] (-) TimerEvent: {}
+[1.443912] (ur3_control) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[1.459368] (ur3_control) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[1.501991] (-) TimerEvent: {}
+[1.575098] (ur3_control) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[1.575901] (ur3_control) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[1.602132] (-) TimerEvent: {}
+[1.685229] (ur3_control) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[1.687103] (ur3_control) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[1.702243] (-) TimerEvent: {}
+[1.802087] (ur3_control) StdoutLine: {'line': b'-- Found moveit_ros_planning_interface: 2.5.8 (/opt/ros/humble/share/moveit_ros_planning_interface/cmake)\n'}
+[1.802473] (-) TimerEvent: {}
+[1.846378] (ur3_control) StdoutLine: {'line': b'-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: date_time filesystem program_options system thread \n'}
+[1.902575] (-) TimerEvent: {}
+[2.002848] (-) TimerEvent: {}
+[2.103137] (-) TimerEvent: {}
+[2.203522] (-) TimerEvent: {}
+[2.240442] (ur3_control) StdoutLine: {'line': b'-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: chrono date_time filesystem iostreams program_options regex serialization system thread \n'}
+[2.303602] (-) TimerEvent: {}
+[2.338538] (ur3_control) StdoutLine: {'line': b'-- Found parameter_traits: 0.4.0 (/opt/ros/humble/share/parameter_traits/cmake)\n'}
+[2.361447] (ur3_control) StdoutLine: {'line': b'-- Found Eigen3: TRUE (found version "3.4.0") \n'}
+[2.367713] (ur3_control) StdoutLine: {'line': b'-- Found rclcpp_lifecycle: 16.0.11 (/opt/ros/humble/share/rclcpp_lifecycle/cmake)\n'}
+[2.403654] (-) TimerEvent: {}
+[2.417801] (ur3_control) StdoutLine: {'line': b'-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: filesystem \n'}
+[2.503750] (-) TimerEvent: {}
+[2.558169] (ur3_control) StdoutLine: {'line': b'-- library: /usr/lib/x86_64-linux-gnu/libcurl.so\n'}
+[2.603865] (-) TimerEvent: {}
+[2.629056] (ur3_control) StdoutLine: {'line': b'-- Ensuring Eigen3 include directory is part of orocos-kdl CMake target\n'}
+[2.703939] (-) TimerEvent: {}
+[2.804213] (-) TimerEvent: {}
+[2.903421] (ur3_control) StdoutLine: {'line': b'-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: system filesystem date_time program_options thread chrono \n'}
+[2.904302] (-) TimerEvent: {}
+[2.972248] (ur3_control) StdoutLine: {'line': b'-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: thread system filesystem regex date_time program_options \n'}
+[3.004402] (-) TimerEvent: {}
+[3.017497] (ur3_control) StdoutLine: {'line': b'-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: system filesystem date_time program_options thread \n'}
+[3.090071] (ur3_control) StdoutLine: {'line': b'-- Found nlohmann_json: /usr/lib/cmake/nlohmann_json/nlohmann_jsonConfig.cmake (found version "3.10.5") \n'}
+[3.098106] (ur3_control) StdoutLine: {'line': b'-- Found ament_cmake_gtest: 1.3.11 (/opt/ros/humble/share/ament_cmake_gtest/cmake)\n'}
+[3.104494] (-) TimerEvent: {}
+[3.119826] (ur3_control) StdoutLine: {'line': b"-- Found gtest sources under '/opt/ros/humble/src/gtest_vendor': C++ tests using 'Google Test' will be built\n"}
+[3.204597] (-) TimerEvent: {}
+[3.280149] (ur3_control) StdoutLine: {'line': b'-- Configuring done\n'}
+[3.304701] (-) TimerEvent: {}
+[3.405008] (-) TimerEvent: {}
+[3.461769] (ur3_control) StdoutLine: {'line': b'-- Generating done\n'}
+[3.493610] (ur3_control) StdoutLine: {'line': b'-- Build files have been written to: /home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control\n'}
+[3.505116] (-) TimerEvent: {}
+[3.522458] (ur3_control) CommandEnded: {'returncode': 0}
+[3.523590] (ur3_control) JobProgress: {'identifier': 'ur3_control', 'progress': 'build'}
+[3.525101] (ur3_control) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control', '--', '-j8', '-l8'], 'cwd': '/home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_AU:en'), ('USER', 'jarred'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/jarred/ros2_ws/install/img_prc_interface/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/jarred'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('MANAGERPID', '1607'), ('SYSTEMD_EXEC_PID', '1922'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator23558193cd9818af7fe4d2c2f5bd9d00f'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '2690'), ('COLCON_PREFIX_PATH', '/home/jarred/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'jarred'), ('JOURNAL_STREAM', '8:10988'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'jarred'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '1'), ('WINDOWPATH', '2'), ('PATH', '/home/jarred/anaconda3/bin:/opt/ros/humble/bin:/home/jarred/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/jarred-GF62-7RD:@/tmp/.ICE-unix/1899,unix/jarred-GF62-7RD:/tmp/.ICE-unix/1899'), ('INVOCATION_ID', '4a21c842684d4b1e9c2293066d649d18'), ('XDG_MENU_PREFIX', 'gnome-'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('ROS_DOMAIN_ID', '30'), ('AMENT_PREFIX_PATH', '/home/jarred/ros2_ws/install/ur3_localisation:/home/jarred/ros2_ws/install/ur3_control:/home/jarred/ros2_ws/install/img_prc:/home/jarred/ros2_ws/install/img_prc_interface:/home/jarred/ros2_ws/install/dale_integration:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('TERMINATOR_UUID', 'urn:uuid:2e38b849-016f-4cc2-a2e3-73450becc276'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GAZEBO_RESOURCE_PATH', '/usr/share/gazebo-11/'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/home/jarred/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/jarred/ros2_ws/install/img_prc/lib/python3.10/site-packages:/home/jarred/ros2_ws/install/img_prc_interface/local/lib/python3.10/dist-packages:/home/jarred/ros2_ws/install/dale_integration/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/jarred/ros2_ws/install/ur3_localisation:/home/jarred/ros2_ws/install/ur3_control:/home/jarred/ros2_ws/install/img_prc_interface:/home/jarred/ros2_ws/install/img_prc:/home/jarred/ros2_ws/install/dale_integration:/opt/ros/humble')]), 'shell': False}
+[3.602935] (ur3_control) StdoutLine: {'line': b'[  8%] \x1b[32mBuilding CXX object CMakeFiles/spline_follower_lib.dir/src/spline_follower.cpp.o\x1b[0m\n'}
+[3.603832] (ur3_control) StdoutLine: {'line': b'[ 16%] \x1b[32mBuilding CXX object gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o\x1b[0m\n'}
+[3.605236] (-) TimerEvent: {}
+[3.606873] (ur3_control) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o\x1b[0m\n'}
+[3.705343] (-) TimerEvent: {}
+[3.805669] (-) TimerEvent: {}
+[3.906076] (-) TimerEvent: {}
+[4.006418] (-) TimerEvent: {}
+[4.106784] (-) TimerEvent: {}
+[4.207118] (-) TimerEvent: {}
+[4.307660] (-) TimerEvent: {}
+[4.408286] (-) TimerEvent: {}
+[4.508630] (-) TimerEvent: {}
+[4.609053] (-) TimerEvent: {}
+[4.709507] (-) TimerEvent: {}
+[4.809816] (-) TimerEvent: {}
+[4.910189] (-) TimerEvent: {}
+[5.010506] (-) TimerEvent: {}
+[5.110910] (-) TimerEvent: {}
+[5.211256] (-) TimerEvent: {}
+[5.311566] (-) TimerEvent: {}
+[5.411923] (-) TimerEvent: {}
+[5.512291] (-) TimerEvent: {}
+[5.612591] (-) TimerEvent: {}
+[5.712898] (-) TimerEvent: {}
+[5.799336] (ur3_control) StdoutLine: {'line': b'[ 33%] \x1b[32m\x1b[1mLinking CXX static library libgtest_main.a\x1b[0m\n'}
+[5.813014] (-) TimerEvent: {}
+[5.846313] (ur3_control) StdoutLine: {'line': b'[ 33%] Built target gtest_main\n'}
+[5.913118] (-) TimerEvent: {}
+[6.013431] (-) TimerEvent: {}
+[6.113700] (-) TimerEvent: {}
+[6.213973] (-) TimerEvent: {}
+[6.314290] (-) TimerEvent: {}
+[6.414595] (-) TimerEvent: {}
+[6.514936] (-) TimerEvent: {}
+[6.615321] (-) TimerEvent: {}
+[6.715604] (-) TimerEvent: {}
+[6.815905] (-) TimerEvent: {}
+[6.916229] (-) TimerEvent: {}
+[7.016508] (-) TimerEvent: {}
+[7.116826] (-) TimerEvent: {}
+[7.217238] (-) TimerEvent: {}
+[7.317674] (-) TimerEvent: {}
+[7.418074] (-) TimerEvent: {}
+[7.518384] (-) TimerEvent: {}
+[7.618719] (-) TimerEvent: {}
+[7.719031] (-) TimerEvent: {}
+[7.819377] (-) TimerEvent: {}
+[7.919685] (-) TimerEvent: {}
+[8.019986] (-) TimerEvent: {}
+[8.120351] (-) TimerEvent: {}
+[8.220630] (-) TimerEvent: {}
+[8.320894] (-) TimerEvent: {}
+[8.421190] (-) TimerEvent: {}
+[8.521464] (-) TimerEvent: {}
+[8.621785] (-) TimerEvent: {}
+[8.722105] (-) TimerEvent: {}
+[8.822428] (-) TimerEvent: {}
+[8.922716] (-) TimerEvent: {}
+[9.022975] (-) TimerEvent: {}
+[9.123243] (-) TimerEvent: {}
+[9.223591] (-) TimerEvent: {}
+[9.323893] (-) TimerEvent: {}
+[9.424216] (-) TimerEvent: {}
+[9.504420] (ur3_control) StdoutLine: {'line': b'[ 41%] \x1b[32m\x1b[1mLinking CXX static library libgtest.a\x1b[0m\n'}
+[9.524401] (-) TimerEvent: {}
+[9.591004] (ur3_control) StdoutLine: {'line': b'[ 41%] Built target gtest\n'}
+[9.625010] (ur3_control) StdoutLine: {'line': b'[ 58%] \x1b[32mBuilding CXX object CMakeFiles/test_tool_path_z_consistency.dir/unit_testing/test_tool_path_z_consistency.cpp.o\x1b[0m\n'}
+[9.625377] (-) TimerEvent: {}
+[9.625588] (ur3_control) StdoutLine: {'line': b'[ 58%] \x1b[32mBuilding CXX object CMakeFiles/test_tool_path_accuracy.dir/unit_testing/test_tool_path_accuracy.cpp.o\x1b[0m\n'}
+[9.725501] (-) TimerEvent: {}
+[9.826330] (-) TimerEvent: {}
+[9.926720] (-) TimerEvent: {}
+[10.027119] (-) TimerEvent: {}
+[10.127564] (-) TimerEvent: {}
+[10.228230] (-) TimerEvent: {}
+[10.328923] (-) TimerEvent: {}
+[10.429359] (-) TimerEvent: {}
+[10.529746] (-) TimerEvent: {}
+[10.630154] (-) TimerEvent: {}
+[10.730431] (-) TimerEvent: {}
+[10.830751] (-) TimerEvent: {}
+[10.931248] (-) TimerEvent: {}
+[11.031861] (-) TimerEvent: {}
+[11.132443] (-) TimerEvent: {}
+[11.233072] (-) TimerEvent: {}
+[11.333641] (-) TimerEvent: {}
+[11.434268] (-) TimerEvent: {}
+[11.534783] (-) TimerEvent: {}
+[11.635121] (-) TimerEvent: {}
+[11.735496] (-) TimerEvent: {}
+[11.835856] (-) TimerEvent: {}
+[11.936229] (-) TimerEvent: {}
+[12.036542] (-) TimerEvent: {}
+[12.136829] (-) TimerEvent: {}
+[12.237107] (-) TimerEvent: {}
+[12.337365] (-) TimerEvent: {}
+[12.437681] (-) TimerEvent: {}
+[12.538074] (-) TimerEvent: {}
+[12.638637] (-) TimerEvent: {}
+[12.738929] (-) TimerEvent: {}
+[12.839215] (-) TimerEvent: {}
+[12.939499] (-) TimerEvent: {}
+[13.039870] (-) TimerEvent: {}
+[13.140207] (-) TimerEvent: {}
+[13.240508] (-) TimerEvent: {}
+[13.340853] (-) TimerEvent: {}
+[13.441184] (-) TimerEvent: {}
+[13.541453] (-) TimerEvent: {}
+[13.641768] (-) TimerEvent: {}
+[13.742032] (-) TimerEvent: {}
+[13.842361] (-) TimerEvent: {}
+[13.942730] (-) TimerEvent: {}
+[14.043219] (-) TimerEvent: {}
+[14.143967] (-) TimerEvent: {}
+[14.246390] (-) TimerEvent: {}
+[14.347565] (-) TimerEvent: {}
+[14.448029] (-) TimerEvent: {}
+[14.548491] (-) TimerEvent: {}
+[14.648944] (-) TimerEvent: {}
+[14.749342] (-) TimerEvent: {}
+[14.849929] (-) TimerEvent: {}
+[14.950640] (-) TimerEvent: {}
+[15.050965] (-) TimerEvent: {}
+[15.151448] (-) TimerEvent: {}
+[15.253004] (-) TimerEvent: {}
+[15.354121] (-) TimerEvent: {}
+[15.454500] (-) TimerEvent: {}
+[15.554848] (-) TimerEvent: {}
+[15.610380] (ur3_control) StdoutLine: {'line': b'[ 66%] \x1b[32m\x1b[1mLinking CXX executable test_tool_path_accuracy\x1b[0m\n'}
+[15.655000] (-) TimerEvent: {}
+[15.755538] (-) TimerEvent: {}
+[15.856245] (-) TimerEvent: {}
+[15.893268] (ur3_control) StdoutLine: {'line': b'[ 75%] \x1b[32m\x1b[1mLinking CXX executable test_tool_path_z_consistency\x1b[0m\n'}
+[15.956473] (-) TimerEvent: {}
+[15.983207] (ur3_control) StdoutLine: {'line': b'[ 75%] Built target test_tool_path_accuracy\n'}
+[16.056637] (-) TimerEvent: {}
+[16.157126] (-) TimerEvent: {}
+[16.257758] (-) TimerEvent: {}
+[16.290214] (ur3_control) StdoutLine: {'line': b'[ 75%] Built target test_tool_path_z_consistency\n'}
+[16.357931] (-) TimerEvent: {}
+[16.458328] (-) TimerEvent: {}
+[16.558820] (-) TimerEvent: {}
+[16.660289] (-) TimerEvent: {}
+[16.761615] (-) TimerEvent: {}
+[16.862376] (-) TimerEvent: {}
+[16.962675] (-) TimerEvent: {}
+[17.062971] (-) TimerEvent: {}
+[17.163334] (-) TimerEvent: {}
+[17.263622] (-) TimerEvent: {}
+[17.363930] (-) TimerEvent: {}
+[17.464292] (-) TimerEvent: {}
+[17.564568] (-) TimerEvent: {}
+[17.664853] (-) TimerEvent: {}
+[17.765198] (-) TimerEvent: {}
+[17.865484] (-) TimerEvent: {}
+[17.965893] (-) TimerEvent: {}
+[18.066549] (-) TimerEvent: {}
+[18.167052] (-) TimerEvent: {}
+[18.267362] (-) TimerEvent: {}
+[18.367730] (-) TimerEvent: {}
+[18.468246] (-) TimerEvent: {}
+[18.568630] (-) TimerEvent: {}
+[18.669026] (-) TimerEvent: {}
+[18.769463] (-) TimerEvent: {}
+[18.870383] (-) TimerEvent: {}
+[18.971079] (-) TimerEvent: {}
+[19.071438] (-) TimerEvent: {}
+[19.172153] (-) TimerEvent: {}
+[19.273255] (-) TimerEvent: {}
+[19.373647] (-) TimerEvent: {}
+[19.474125] (-) TimerEvent: {}
+[19.574518] (-) TimerEvent: {}
+[19.674887] (-) TimerEvent: {}
+[19.775334] (-) TimerEvent: {}
+[19.875794] (-) TimerEvent: {}
+[19.976271] (-) TimerEvent: {}
+[20.076685] (-) TimerEvent: {}
+[20.177020] (-) TimerEvent: {}
+[20.277330] (-) TimerEvent: {}
+[20.377698] (-) TimerEvent: {}
+[20.478090] (-) TimerEvent: {}
+[20.578387] (-) TimerEvent: {}
+[20.678711] (-) TimerEvent: {}
+[20.778981] (-) TimerEvent: {}
+[20.879265] (-) TimerEvent: {}
+[20.979619] (-) TimerEvent: {}
+[21.080630] (-) TimerEvent: {}
+[21.180905] (-) TimerEvent: {}
+[21.281223] (-) TimerEvent: {}
+[21.381481] (-) TimerEvent: {}
+[21.481857] (-) TimerEvent: {}
+[21.582279] (-) TimerEvent: {}
+[21.682608] (-) TimerEvent: {}
+[21.783000] (-) TimerEvent: {}
+[21.883334] (-) TimerEvent: {}
+[21.983592] (-) TimerEvent: {}
+[22.083900] (-) TimerEvent: {}
+[22.184307] (-) TimerEvent: {}
+[22.284572] (-) TimerEvent: {}
+[22.384849] (-) TimerEvent: {}
+[22.485117] (-) TimerEvent: {}
+[22.585487] (-) TimerEvent: {}
+[22.685797] (-) TimerEvent: {}
+[22.786090] (-) TimerEvent: {}
+[22.886488] (-) TimerEvent: {}
+[22.986811] (-) TimerEvent: {}
+[23.087071] (-) TimerEvent: {}
+[23.187367] (-) TimerEvent: {}
+[23.287681] (-) TimerEvent: {}
+[23.388049] (-) TimerEvent: {}
+[23.488383] (-) TimerEvent: {}
+[23.588904] (-) TimerEvent: {}
+[23.689194] (-) TimerEvent: {}
+[23.789470] (-) TimerEvent: {}
+[23.889816] (-) TimerEvent: {}
+[23.990128] (-) TimerEvent: {}
+[24.090429] (-) TimerEvent: {}
+[24.190747] (-) TimerEvent: {}
+[24.291064] (-) TimerEvent: {}
+[24.391396] (-) TimerEvent: {}
+[24.491741] (-) TimerEvent: {}
+[24.592095] (-) TimerEvent: {}
+[24.692379] (-) TimerEvent: {}
+[24.792651] (-) TimerEvent: {}
+[24.892901] (-) TimerEvent: {}
+[24.993201] (-) TimerEvent: {}
+[25.093466] (-) TimerEvent: {}
+[25.193820] (-) TimerEvent: {}
+[25.294091] (-) TimerEvent: {}
+[25.394384] (-) TimerEvent: {}
+[25.494786] (-) TimerEvent: {}
+[25.595151] (-) TimerEvent: {}
+[25.695416] (-) TimerEvent: {}
+[25.795718] (-) TimerEvent: {}
+[25.896001] (-) TimerEvent: {}
+[25.996307] (-) TimerEvent: {}
+[26.096579] (-) TimerEvent: {}
+[26.197009] (-) TimerEvent: {}
+[26.297485] (-) TimerEvent: {}
+[26.397863] (-) TimerEvent: {}
+[26.498657] (-) TimerEvent: {}
+[26.599101] (-) TimerEvent: {}
+[26.699416] (-) TimerEvent: {}
+[26.800218] (-) TimerEvent: {}
+[26.900709] (-) TimerEvent: {}
+[27.001321] (-) TimerEvent: {}
+[27.101630] (-) TimerEvent: {}
+[27.201971] (-) TimerEvent: {}
+[27.302303] (-) TimerEvent: {}
+[27.402604] (-) TimerEvent: {}
+[27.502880] (-) TimerEvent: {}
+[27.603140] (-) TimerEvent: {}
+[27.703477] (-) TimerEvent: {}
+[27.803797] (-) TimerEvent: {}
+[27.904093] (-) TimerEvent: {}
+[28.004360] (-) TimerEvent: {}
+[28.104596] (-) TimerEvent: {}
+[28.204875] (-) TimerEvent: {}
+[28.305101] (-) TimerEvent: {}
+[28.405397] (-) TimerEvent: {}
+[28.505685] (-) TimerEvent: {}
+[28.606010] (-) TimerEvent: {}
+[28.706316] (-) TimerEvent: {}
+[28.806577] (-) TimerEvent: {}
+[28.906850] (-) TimerEvent: {}
+[29.007111] (-) TimerEvent: {}
+[29.107399] (-) TimerEvent: {}
+[29.207707] (-) TimerEvent: {}
+[29.308000] (-) TimerEvent: {}
+[29.408285] (-) TimerEvent: {}
+[29.508529] (-) TimerEvent: {}
+[29.608813] (-) TimerEvent: {}
+[29.709082] (-) TimerEvent: {}
+[29.809384] (-) TimerEvent: {}
+[29.909666] (-) TimerEvent: {}
+[30.009965] (-) TimerEvent: {}
+[30.110270] (-) TimerEvent: {}
+[30.210612] (-) TimerEvent: {}
+[30.310877] (-) TimerEvent: {}
+[30.411101] (-) TimerEvent: {}
+[30.511403] (-) TimerEvent: {}
+[30.611754] (-) TimerEvent: {}
+[30.712182] (-) TimerEvent: {}
+[30.812498] (-) TimerEvent: {}
+[30.912827] (-) TimerEvent: {}
+[31.013173] (-) TimerEvent: {}
+[31.113539] (-) TimerEvent: {}
+[31.214028] (-) TimerEvent: {}
+[31.314452] (-) TimerEvent: {}
+[31.414816] (-) TimerEvent: {}
+[31.515093] (-) TimerEvent: {}
+[31.615415] (-) TimerEvent: {}
+[31.715821] (-) TimerEvent: {}
+[31.816148] (-) TimerEvent: {}
+[31.916430] (-) TimerEvent: {}
+[32.016678] (-) TimerEvent: {}
+[32.116954] (-) TimerEvent: {}
+[32.217304] (-) TimerEvent: {}
+[32.317617] (-) TimerEvent: {}
+[32.417909] (-) TimerEvent: {}
+[32.518278] (-) TimerEvent: {}
+[32.618611] (-) TimerEvent: {}
+[32.718927] (-) TimerEvent: {}
+[32.819298] (-) TimerEvent: {}
+[32.919790] (-) TimerEvent: {}
+[33.009209] (ur3_control) StdoutLine: {'line': b'[ 83%] \x1b[32m\x1b[1mLinking CXX static library libspline_follower_lib.a\x1b[0m\n'}
+[33.019921] (-) TimerEvent: {}
+[33.120283] (-) TimerEvent: {}
+[33.220607] (-) TimerEvent: {}
+[33.320836] (-) TimerEvent: {}
+[33.424175] (-) TimerEvent: {}
+[33.465668] (ur3_control) StdoutLine: {'line': b'[ 83%] Built target spline_follower_lib\n'}
+[33.517491] (ur3_control) StdoutLine: {'line': b'[ 91%] \x1b[32mBuilding CXX object CMakeFiles/spline_follower.dir/src/main.cpp.o\x1b[0m\n'}
+[33.524279] (-) TimerEvent: {}
+[33.624629] (-) TimerEvent: {}
+[33.725107] (-) TimerEvent: {}
+[33.825558] (-) TimerEvent: {}
+[33.926135] (-) TimerEvent: {}
+[34.026683] (-) TimerEvent: {}
+[34.127063] (-) TimerEvent: {}
+[34.227506] (-) TimerEvent: {}
+[34.327998] (-) TimerEvent: {}
+[34.428730] (-) TimerEvent: {}
+[34.529070] (-) TimerEvent: {}
+[34.629421] (-) TimerEvent: {}
+[34.729788] (-) TimerEvent: {}
+[34.830506] (-) TimerEvent: {}
+[34.931149] (-) TimerEvent: {}
+[35.031873] (-) TimerEvent: {}
+[35.132366] (-) TimerEvent: {}
+[35.232795] (-) TimerEvent: {}
+[35.333102] (-) TimerEvent: {}
+[35.433475] (-) TimerEvent: {}
+[35.533795] (-) TimerEvent: {}
+[35.634264] (-) TimerEvent: {}
+[35.734615] (-) TimerEvent: {}
+[35.834897] (-) TimerEvent: {}
+[35.935219] (-) TimerEvent: {}
+[36.035536] (-) TimerEvent: {}
+[36.135919] (-) TimerEvent: {}
+[36.236335] (-) TimerEvent: {}
+[36.336675] (-) TimerEvent: {}
+[36.436956] (-) TimerEvent: {}
+[36.537226] (-) TimerEvent: {}
+[36.637486] (-) TimerEvent: {}
+[36.737798] (-) TimerEvent: {}
+[36.838117] (-) TimerEvent: {}
+[36.938390] (-) TimerEvent: {}
+[37.038757] (-) TimerEvent: {}
+[37.139081] (-) TimerEvent: {}
+[37.239476] (-) TimerEvent: {}
+[37.339766] (-) TimerEvent: {}
+[37.440037] (-) TimerEvent: {}
+[37.540317] (-) TimerEvent: {}
+[37.640571] (-) TimerEvent: {}
+[37.740851] (-) TimerEvent: {}
+[37.841117] (-) TimerEvent: {}
+[37.941434] (-) TimerEvent: {}
+[38.041749] (-) TimerEvent: {}
+[38.142008] (-) TimerEvent: {}
+[38.242304] (-) TimerEvent: {}
+[38.342561] (-) TimerEvent: {}
+[38.442888] (-) TimerEvent: {}
+[38.543143] (-) TimerEvent: {}
+[38.643440] (-) TimerEvent: {}
+[38.743849] (-) TimerEvent: {}
+[38.844234] (-) TimerEvent: {}
+[38.944617] (-) TimerEvent: {}
+[39.044930] (-) TimerEvent: {}
+[39.145218] (-) TimerEvent: {}
+[39.245517] (-) TimerEvent: {}
+[39.345808] (-) TimerEvent: {}
+[39.446131] (-) TimerEvent: {}
+[39.546417] (-) TimerEvent: {}
+[39.646689] (-) TimerEvent: {}
+[39.746955] (-) TimerEvent: {}
+[39.847232] (-) TimerEvent: {}
+[39.947479] (-) TimerEvent: {}
+[40.047799] (-) TimerEvent: {}
+[40.148089] (-) TimerEvent: {}
+[40.248420] (-) TimerEvent: {}
+[40.348781] (-) TimerEvent: {}
+[40.449125] (-) TimerEvent: {}
+[40.549441] (-) TimerEvent: {}
+[40.649715] (-) TimerEvent: {}
+[40.749990] (-) TimerEvent: {}
+[40.850289] (-) TimerEvent: {}
+[40.950655] (-) TimerEvent: {}
+[41.050907] (-) TimerEvent: {}
+[41.151194] (-) TimerEvent: {}
+[41.251490] (-) TimerEvent: {}
+[41.351814] (-) TimerEvent: {}
+[41.452082] (-) TimerEvent: {}
+[41.552351] (-) TimerEvent: {}
+[41.652622] (-) TimerEvent: {}
+[41.752913] (-) TimerEvent: {}
+[41.853157] (-) TimerEvent: {}
+[41.953415] (-) TimerEvent: {}
+[42.053676] (-) TimerEvent: {}
+[42.153992] (-) TimerEvent: {}
+[42.254415] (-) TimerEvent: {}
+[42.354726] (-) TimerEvent: {}
+[42.455099] (-) TimerEvent: {}
+[42.555352] (-) TimerEvent: {}
+[42.655670] (-) TimerEvent: {}
+[42.756025] (-) TimerEvent: {}
+[42.856320] (-) TimerEvent: {}
+[42.956595] (-) TimerEvent: {}
+[43.056921] (-) TimerEvent: {}
+[43.157171] (-) TimerEvent: {}
+[43.257430] (-) TimerEvent: {}
+[43.357723] (-) TimerEvent: {}
+[43.458026] (-) TimerEvent: {}
+[43.558372] (-) TimerEvent: {}
+[43.658656] (-) TimerEvent: {}
+[43.758955] (-) TimerEvent: {}
+[43.859364] (-) TimerEvent: {}
+[43.959676] (-) TimerEvent: {}
+[44.059972] (-) TimerEvent: {}
+[44.160279] (-) TimerEvent: {}
+[44.260540] (-) TimerEvent: {}
+[44.360873] (-) TimerEvent: {}
+[44.461122] (-) TimerEvent: {}
+[44.561451] (-) TimerEvent: {}
+[44.661773] (-) TimerEvent: {}
+[44.762082] (-) TimerEvent: {}
+[44.862347] (-) TimerEvent: {}
+[44.962627] (-) TimerEvent: {}
+[45.062908] (-) TimerEvent: {}
+[45.163185] (-) TimerEvent: {}
+[45.263550] (-) TimerEvent: {}
+[45.363857] (-) TimerEvent: {}
+[45.464250] (-) TimerEvent: {}
+[45.564529] (-) TimerEvent: {}
+[45.664789] (-) TimerEvent: {}
+[45.765123] (-) TimerEvent: {}
+[45.865420] (-) TimerEvent: {}
+[45.965691] (-) TimerEvent: {}
+[46.065971] (-) TimerEvent: {}
+[46.166287] (-) TimerEvent: {}
+[46.266553] (-) TimerEvent: {}
+[46.366903] (-) TimerEvent: {}
+[46.467153] (-) TimerEvent: {}
+[46.567430] (-) TimerEvent: {}
+[46.667827] (-) TimerEvent: {}
+[46.768260] (-) TimerEvent: {}
+[46.868780] (-) TimerEvent: {}
+[46.969212] (-) TimerEvent: {}
+[47.069564] (-) TimerEvent: {}
+[47.169868] (-) TimerEvent: {}
+[47.270236] (-) TimerEvent: {}
+[47.318426] (ur3_control) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable spline_follower\x1b[0m\n'}
+[47.370339] (-) TimerEvent: {}
+[47.471003] (-) TimerEvent: {}
+[47.572341] (-) TimerEvent: {}
+[47.673164] (-) TimerEvent: {}
+[47.773672] (-) TimerEvent: {}
+[47.874765] (-) TimerEvent: {}
+[47.975719] (-) TimerEvent: {}
+[48.077175] (-) TimerEvent: {}
+[48.177805] (-) TimerEvent: {}
+[48.278585] (-) TimerEvent: {}
+[48.379253] (-) TimerEvent: {}
+[48.480653] (-) TimerEvent: {}
+[48.581285] (-) TimerEvent: {}
+[48.682118] (-) TimerEvent: {}
+[48.782696] (-) TimerEvent: {}
+[48.883210] (-) TimerEvent: {}
+[48.983847] (-) TimerEvent: {}
+[49.085232] (-) TimerEvent: {}
+[49.185722] (-) TimerEvent: {}
+[49.286076] (-) TimerEvent: {}
+[49.386507] (-) TimerEvent: {}
+[49.486796] (-) TimerEvent: {}
+[49.587067] (-) TimerEvent: {}
+[49.687360] (-) TimerEvent: {}
+[49.787713] (-) TimerEvent: {}
+[49.888137] (-) TimerEvent: {}
+[49.988491] (-) TimerEvent: {}
+[50.088831] (-) TimerEvent: {}
+[50.189254] (-) TimerEvent: {}
+[50.211149] (ur3_control) StdoutLine: {'line': b'[100%] Built target spline_follower\n'}
+[50.226172] (ur3_control) CommandEnded: {'returncode': 0}
+[50.227473] (ur3_control) JobProgress: {'identifier': 'ur3_control', 'progress': 'install'}
+[50.240014] (ur3_control) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control'], 'cwd': '/home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'en_AU:en'), ('USER', 'jarred'), ('XDG_SESSION_TYPE', 'x11'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/jarred/ros2_ws/install/img_prc_interface/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/jarred'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/terminator.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('MANAGERPID', '1607'), ('SYSTEMD_EXEC_PID', '1922'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('TERMINATOR_DBUS_NAME', 'net.tenshu.Terminator23558193cd9818af7fe4d2c2f5bd9d00f'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '2690'), ('COLCON_PREFIX_PATH', '/home/jarred/ros2_ws/install'), ('ROS_DISTRO', 'humble'), ('GTK_IM_MODULE', 'ibus'), ('LOGNAME', 'jarred'), ('JOURNAL_STREAM', '8:10988'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'jarred'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '1'), ('WINDOWPATH', '2'), ('PATH', '/home/jarred/anaconda3/bin:/opt/ros/humble/bin:/home/jarred/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin'), ('SESSION_MANAGER', 'local/jarred-GF62-7RD:@/tmp/.ICE-unix/1899,unix/jarred-GF62-7RD:/tmp/.ICE-unix/1899'), ('INVOCATION_ID', '4a21c842684d4b1e9c2293066d649d18'), ('XDG_MENU_PREFIX', 'gnome-'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', ':1'), ('TERMINATOR_DBUS_PATH', '/net/tenshu/Terminator2'), ('LANG', 'en_US.UTF-8'), ('XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('IBUS_DISABLE_SNOOPER', '1'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/gdm/Xauthority'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('ROS_DOMAIN_ID', '30'), ('AMENT_PREFIX_PATH', '/home/jarred/ros2_ws/install/ur3_localisation:/home/jarred/ros2_ws/install/ur3_control:/home/jarred/ros2_ws/install/img_prc:/home/jarred/ros2_ws/install/img_prc_interface:/home/jarred/ros2_ws/install/dale_integration:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('TERMINATOR_UUID', 'urn:uuid:2e38b849-016f-4cc2-a2e3-73450becc276'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GPG_AGENT_INFO', '/run/user/1000/gnupg/S.gpg-agent:0:1'), ('GAZEBO_RESOURCE_PATH', '/usr/share/gazebo-11/'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control'), ('LC_ALL', 'en_US.UTF-8'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/share/gnome:/home/jarred/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/jarred/ros2_ws/install/img_prc/lib/python3.10/site-packages:/home/jarred/ros2_ws/install/img_prc_interface/local/lib/python3.10/dist-packages:/home/jarred/ros2_ws/install/dale_integration/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('VTE_VERSION', '6800'), ('CMAKE_PREFIX_PATH', '/home/jarred/ros2_ws/install/ur3_localisation:/home/jarred/ros2_ws/install/ur3_control:/home/jarred/ros2_ws/install/img_prc_interface:/home/jarred/ros2_ws/install/img_prc:/home/jarred/ros2_ws/install/dale_integration:/opt/ros/humble')]), 'shell': False}
+[50.251068] (ur3_control) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[50.252004] (ur3_control) StdoutLine: {'line': b'-- Execute custom install script\n'}
+[50.252558] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/lib/ur3_control/libspline_follower_lib.a\n'}
+[50.266829] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/lib/ur3_control/spline_follower\n'}
+[50.281261] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control//config/circle_waypoints.json\n'}
+[50.289350] (-) TimerEvent: {}
+[50.294392] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control//config/hardware_circle_waypoints.json\n'}
+[50.307352] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control//config/image_waypoints.json\n'}
+[50.320011] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control//config/sim_circle_waypoints.json\n'}
+[50.332119] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control//config/smiley_waypoints.json\n'}
+[50.345460] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control//launch/moveit_stack.launch.py\n'}
+[50.359437] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ament_index/resource_index/package_run_dependencies/ur3_control\n'}
+[50.371920] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ament_index/resource_index/parent_prefix_path/ur3_control\n'}
+[50.385533] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/environment/ament_prefix_path.sh\n'}
+[50.389451] (-) TimerEvent: {}
+[50.399433] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/environment/ament_prefix_path.dsv\n'}
+[50.413396] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/environment/path.sh\n'}
+[50.426770] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/environment/path.dsv\n'}
+[50.439284] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/local_setup.bash\n'}
+[50.453894] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/local_setup.sh\n'}
+[50.468843] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/local_setup.zsh\n'}
+[50.484143] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/local_setup.dsv\n'}
+[50.489574] (-) TimerEvent: {}
+[50.499176] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/package.dsv\n'}
+[50.514556] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ament_index/resource_index/packages/ur3_control\n'}
+[50.529596] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[50.542273] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/cmake/ur3_controlConfig.cmake\n'}
+[50.556776] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/cmake/ur3_controlConfig-version.cmake\n'}
+[50.569418] (ur3_control) StdoutLine: {'line': b'-- Symlinking: /home/jarred/git/DalESelfEBot/ur3_control/install/ur3_control/share/ur3_control/package.xml\n'}
+[50.585471] (ur3_control) CommandEnded: {'returncode': 0}
+[50.589653] (-) TimerEvent: {}
+[50.612777] (ur3_control) JobEnded: {'identifier': 'ur3_control', 'rc': 0}
+[50.613881] (-) EventReactorShutdown: {}

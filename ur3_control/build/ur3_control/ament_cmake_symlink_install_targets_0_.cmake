@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control/libspline_follower_lib.a" "/home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control/spline_follower" "TARGETS" "spline_follower_lib" "spline_follower" "DESTINATION" "lib/ur3_control")

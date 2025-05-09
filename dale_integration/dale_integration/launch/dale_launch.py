@@ -16,10 +16,29 @@ def generate_launch_description():
         with open(config_path, 'r') as file:
             config = yaml.safe_load(file)
             ur_type = config['robot']['ur_type']
+            ip_address = config['robot']['ip_address']
     except Exception as e:
         raise RuntimeError(f"Failed to load 'ur_type' from YAML: {e}")
 
     return LaunchDescription([
+
+        # # UR Driver
+        # IncludeLaunchDescription(
+        #     PythonLaunchDescriptionSource([
+        #         PathJoinSubstitution([
+        #             FindPackageShare('ur_robot_driver'),
+        #             'launch',
+        #             'ur_control.launch.py'
+        #         ])
+        #     ]),
+        #     launch_arguments={
+        #         'ur_type': ur_type,
+        #         'robot_ip': ip_address,
+        #         'launch_rviz': 'true',
+        #         'kinematics_config': '/home/jarred/git/DalESelfEBot/GUI/calibration.yaml'
+        #     }.items()
+        # ),
+
         # Motion Planning (MoveIt config)
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([

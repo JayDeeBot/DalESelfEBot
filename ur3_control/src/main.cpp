@@ -37,49 +37,26 @@ int main(int argc, char * argv[])
     move_group_interface.setMaxVelocityScalingFactor(0.1);  // 1.0 = 100% of max velocity
     move_group_interface.setMaxAccelerationScalingFactor(1.0); // 1.0 = 100% of max acceleration
 
-    // // Main thread waits for the flag
-    // {
-    //     std::unique_lock<std::mutex> lock(control->mtx_);
-    //     control->cv_.wait(lock, [& control] { return control->flag_received_; });
-    //     std::cout << "Main thread received the signal!" << std::endl;
-            // control->flag_received_ = false;
-    // }
-
-    // Load up the splines for drawing
-    control->loadSplines();
-
-    // Generate border - Placed at the start of the queue
-    double x_offset = 0.07375; // x offset
-    double y_offset = 0.0525; // y offset
-    if(!control->generateBorderSpline(x_offset, y_offset)) RCLCPP_ERROR(logger, "Failed to generate border.");
-
-    // Generate signature - Placed at the end of the queue
-    // if(!control->generateSignageSpline()) RCLCPP_ERROR(logger, "Failed to generate signature");
-
-
-    std::cout << "There are " << control->spline_data_["splines"].size() << " splines to draw." << std::endl;
-    std::string filename = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/splines.csv";
-    control->exportSplineToCSV(filename);
-
     // Add in a ground plane at z = 0 to ensure the robot does not move through its base during intermediate movements
     control->addGroundPlane();
-
-    geometry_msgs::msg::Pose pose = move_group_interface.getCurrentPose().pose;
-    std::cout << "Current z = " << pose.position.z << std::endl;
 
     // Set the maximum amount of retries for a state to attempt its objective
     unsigned int MAX_RETRIES = 3;
     unsigned int RETRIES = 0;
 
+    bool isIdle = false;
+
     // Enter state machine for drawing lifecylce
     while (rclcpp::ok()) {
         // Check retries and shutdown if max retries has been reached
         if(RETRIES > MAX_RETRIES){ // If the max retries has been reached report and shutdown the system
-            RCLCPP_ERROR(logger, "The maximum amount of retries has been reached. Please take a new selfie.");
+            RCLCPP_ERROR(logger, "The maximum amount of retries has been reached. Returning to idle state.");
             // Send error message to the GUI
             bool drawing_incomplete = control->current_spline_index_ != control->spline_data_.size();
             control->sendError(drawing_incomplete);
             control->state_ = SplineFollower::State::IDLE;
+            isIdle = false;
+            RETRIES = 0;
         }
         // If we recieve the shutdown signal enter the stop state - return home and shutodwn safely. 
         if(control->shutdown_){
@@ -91,9 +68,11 @@ int main(int argc, char * argv[])
             {
                 RCLCPP_INFO(logger, "State: Init");
 
+                isIdle = false;
+
                 control->addCanvasPlane(); // Add in the canvas collision object
 
-                control->waitForContinue(); // For debug
+                // control->waitForContinue(); // For debug
 
                 // Set the safe start pose: saved to control->safe_start_pose_
                 control->setSafeStartPose();
@@ -158,7 +137,7 @@ int main(int argc, char * argv[])
                     rclcpp::sleep_for(std::chrono::milliseconds(10)); // Wait for scene to update
                     control->planning_scene_interface_.removeCollisionObjects({"obstacle_right"});
                     // Move to next state
-                    control->state_ = SplineFollower::State::MOVE_TO_INTERMEDIATE_POS;
+                    control->state_ = SplineFollower::State::IDLE;
                 }
                 else{ // If the plan has failed remain in this state and retry
                     RCLCPP_ERROR(logger, "The planner/executor has failed, attempting to plan/execute again.");
@@ -174,6 +153,7 @@ int main(int argc, char * argv[])
             {
                 RCLCPP_INFO(logger, "State: Move to intermediate pos.");
 
+                isIdle = false;
                 // control->waitForContinue(); // For debug
 
                 // Ensure we have a next spline to move to
@@ -234,8 +214,6 @@ int main(int argc, char * argv[])
 
                 // control->waitForContinue(); // For debug
 
-                // Calculate the average Z position of the canvas
-                // double canvas_z = control->calculateAverageCanvasHeight();
                 geometry_msgs::msg::Pose current_pose = move_group_interface.getCurrentPose().pose; // Fetch the current pose
 
                 // Set the target canvas pose
@@ -367,38 +345,10 @@ int main(int argc, char * argv[])
             // State idle
             case SplineFollower::State::IDLE:
             {
-                RCLCPP_INFO(logger, "State: Idle.");
-                RCLCPP_INFO(logger, "Waiting for a new drawaing.");
-
-                // Main thread waits for the flag
-                {
-                    std::unique_lock<std::mutex> lock(control->mtx_);
-                    control->cv_.wait(lock, [& control] { return control->flag_received_; });
-                    std::cout << "Main thread received the signal!" << std::endl;
-                    control->flag_received_ = false;
-                }
-
-                // Load up the splines for drawing
-                control->loadSplines();
-
-                if (control->spline_data_["splines"].size() > 0){
-                    RCLCPP_INFO(logger, "Recived new drawing.");
-                    // Generate border - Placed at the start of the queue
-                    double offset = 0.05; // 5 cm offset
-                    if(!control->generateBorderSpline(x_offset, y_offset)) RCLCPP_ERROR(logger, "Failed to generate border.");
-
-                    // Generate signature - Placed at the end of the queue
-                    // if(!control->generateSignageSpline()) RCLCPP_ERROR(logger, "Failed to generate signature");
-
-                    std::cout << "There are " << control->spline_data_["splines"].size() << " splines to draw." << std::endl;
-                    std::string filename = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/splines.csv";
-                    control->exportSplineToCSV(filename);
-
-                    control->current_spline_index_ = 0;
-                    control->state_ = SplineFollower::State::MOVE_TO_INTERMEDIATE_POS;
-                }
-                else{
-                    RCLCPP_ERROR(logger, "No splines provided to draw. Please send new toolpath. Remaining idle.");
+                if(!isIdle){
+                    RCLCPP_INFO(logger, "State: Idle.");
+                    RCLCPP_INFO(logger, "Waiting for a new drawing or service request.");
+                    isIdle = true;
                 }
 
                 break;
@@ -406,10 +356,10 @@ int main(int argc, char * argv[])
 
             // State stop: return home and close the program
             case SplineFollower::State::STOP:
-
+            {
                 RCLCPP_INFO(logger, "State: Stop.");
 
-                control->waitForContinue(); // For debug
+                // control->waitForContinue(); // For debug
 
                 RCLCPP_INFO(logger, "Returning home.");
 
@@ -463,6 +413,52 @@ int main(int argc, char * argv[])
                 }
 
                 break;
+            }
+            // State service: move to allow pen to be serviced then move back. 
+            case SplineFollower::State::SERVICE:
+            {
+                if (control->service_started_)
+                    {
+                        RCLCPP_INFO(logger, "State: Service. Service in progress.");
+                        RCLCPP_INFO(logger, "Returning home.");
+
+                    // Set home joint values to upright position
+                    sensor_msgs::msg::JointState home_state;
+                    home_state.name = { // Organise joint names in order
+                        "shoulder_pan_joint",
+                        "shoulder_lift_joint",
+                        "elbow_joint",
+                        "wrist_1_joint",
+                        "wrist_2_joint",
+                        "wrist_3_joint"
+                    };
+                    home_state.position = { // Set the joint values
+                        0.0, -M_PI/2.0, 0.0, -M_PI/2.0, 0.0, 0.0
+                    };
+
+                    // Generate the plan to home position
+                    moveit::planning_interface::MoveGroupInterface::Plan plan;
+                    move_group_interface.setJointValueTarget(home_state); // Set the target joint values
+                    move_group_interface.setPlanningTime(10.0); // Apply generous planning time to reduce possibility of error
+                    move_group_interface.setPlannerId("PTP"); // Set the planner id to point-to-point
+                    moveit::core::MoveItErrorCode response; // Create a response message
+                    response = move_group_interface.plan(plan); // Generate the plan - save the response 
+
+                    // Check the respose
+                    if(response == moveit::core::MoveItErrorCode::SUCCESS){ // If successful execute the path
+                        // Execute the plan
+                        move_group_interface.execute(plan);
+                        RCLCPP_INFO(logger, "Moved home.");
+                        control->service_started_ = false;
+
+                    }
+                    else{ // If the planner has failed try again
+                        RCLCPP_ERROR(logger, "The planner has failed, attempting to plan again.");
+                        RETRIES++; // Increment the retries up
+                    }
+                }
+                break;
+            }
         }
     }
     // Shutdown ROS and join threads (in case state machine while loop is broken)

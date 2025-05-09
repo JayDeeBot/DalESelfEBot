@@ -53,3 +53,7 @@ ros2 topic pub /toolpath std_msgs/msg/Empty -1
 # Publish shutdown message
 
 ros2 topic pub /shutdown std_msgs/msg/Empty -1
+
+# Publish Service Call
+
+ros2 topic pub /service_ee std_msgs/msg/Empty -1

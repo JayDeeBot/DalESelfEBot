@@ -1,0 +1,1 @@
+/home/jarred/git/DalESelfEBot/ur3_control/build/ur3_control/ament_cmake_environment_hooks/local_setup.sh

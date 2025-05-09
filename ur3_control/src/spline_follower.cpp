@@ -6,20 +6,30 @@ using namespace std::chrono_literals;
 using json = nlohmann::json;
 
 // Constructor - init member variables: Node name to: spline_follower, state starts in init and initial spline index is 0
-SplineFollower::SplineFollower() : Node("spline_follower"), state_(State::INIT), current_spline_index_(0), flag_received_(false), 
-shutdown_(false), tooltip_offset_(0.108) {
+SplineFollower::SplineFollower() : Node("spline_follower"), state_(State::INIT), current_spline_index_(0), shutdown_(false), 
+tooltip_offset_(0.108), service_started_(false), keep_publishing_state_(true) {
     RCLCPP_INFO(this->get_logger(), "SplineFollower node created.");
-
     canvas_z_ = calculateAverageCanvasHeight() + tooltip_offset_;
     // canvas_z_ = calculateAverageCanvasHeight();
     lifted_z_ = canvas_z_ + 0.05;
-
     // Initalise Publishers and Subscribers for communication with other subsystems
     toolpath_sub_ = this->create_subscription<std_msgs::msg::Empty>("/toolpath", 10, std::bind(&SplineFollower::toolpath_sub_callback, this, std::placeholders::_1));
     error_pub_ = this->create_publisher<std_msgs::msg::String>("/control_error", 10);
     shutdown_sub_ = this->create_subscription<std_msgs::msg::Empty>("/shutdown", 10, std::bind(&SplineFollower::shutdownCallback, this, std::placeholders::_1));
     continue_sub_ = this->create_subscription<std_msgs::msg::Empty>("/continue_execution", 10, std::bind(&SplineFollower::continueCallback, this, std::placeholders::_1));
+    service_sub_ = this->create_subscription<std_msgs::msg::Empty>("/service_ee", 10, std::bind(&SplineFollower::serviceCallback, this, std::placeholders::_1));
+    state_pub_ = this->create_publisher<std_msgs::msg::String>("/control_state", 10);
 
+    // Start the state publishing thread
+    state_pub_thread_ = std::thread(&SplineFollower::statePublishingLoop, this);
+}
+
+// Destructor
+SplineFollower::~SplineFollower() {
+    keep_publishing_state_ = false;
+    if (state_pub_thread_.joinable()) {
+        state_pub_thread_.join();
+    }
 }
 
 // Add in a plane at z = 0 so that moveit avoids colliding with the robot base
@@ -317,13 +327,33 @@ double SplineFollower::calculateAverageCanvasHeight() {
 
 void SplineFollower::toolpath_sub_callback(const std_msgs::msg::Empty::SharedPtr msg){
 
-    std::unique_lock<std::mutex> lock(mtx_);
     RCLCPP_INFO(this->get_logger(), "Received a new set of toolpaths.");
-    // Set the flag and notify main thread
-    flag_received_ = true;
-    cv_.notify_one();
     process_toolath_to_json();
 
+    // Load up the splines for drawing
+    loadSplines();
+
+    // Generate border - Placed at the start of the queue
+    double x_offset = 0.07375; // x offset
+    double y_offset = 0.0525; // y offset
+
+    if (spline_data_["splines"].size() > 0){
+        RCLCPP_INFO(this->get_logger(), "Recived new drawing.");
+        // Generate border - Placed at the start of the queue
+        if(generateBorderSpline(x_offset, y_offset)) RCLCPP_ERROR(this->get_logger(), "Failed to generate border.");
+
+        // Generate signature - Placed at the end of the queue
+        // if(!control->generateSignageSpline()) RCLCPP_ERROR(logger, "Failed to generate signature");
+
+        std::cout << "There are " << spline_data_["splines"].size() << " splines to draw." << std::endl;
+        std::string filename = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/splines.csv";
+        exportSplineToCSV(filename);
+        current_spline_index_ = 0;
+        state_ = SplineFollower::State::MOVE_TO_INTERMEDIATE_POS;
+    }
+    else{
+        RCLCPP_ERROR(this->get_logger(), "No splines provided to draw. Please send new toolpath. Remaining idle.");
+    }
 }
 
 void SplineFollower::process_toolath_to_json(){
@@ -341,6 +371,31 @@ void SplineFollower::sendError(bool drawing_incomplete) {
         msg.data = "Control Failed! The toolpaths were completed. Please return robot to the upright posistion manually.";
     }
     error_pub_->publish(msg); // Publish message
+}
+
+// Function to publish error message to GUI
+void SplineFollower::publishState() {
+    std_msgs::msg::String msg;
+
+    // Convert enum state_ to string
+    std::string state_str;
+    switch (state_) {
+        case State::INIT:                          state_str = "INIT"; break;
+        case State::MOVE_TO_INTERMEDIATE_POS:      state_str = "MOVE_TO_INTERMEDIATE_POS"; break;
+        case State::MOVE_TO_CANVAS:                state_str = "MOVE_TO_CANVAS"; break;
+        case State::MOVE_THROUGH_DRAWING_TRAJECTORY: state_str = "MOVE_THROUGH_DRAWING_TRAJECTORY"; break;
+        case State::MOVE_OFF_CANVAS:               state_str = "MOVE_OFF_CANVAS"; break;
+        case State::IDLE:                          state_str = "IDLE"; break;
+        case State::STOP:                          state_str = "STOP"; break;
+        case State::SERVICE:                       state_str = "SERVICE"; break;
+        default:                                   state_str = "UNKNOWN"; break;
+    }
+
+    // Set the message content
+    msg.data = state_str;
+
+    // Publish the state
+    state_pub_->publish(msg);
 }
 
 // Function to generate a border spline and place it at position 0 to be drawn first
@@ -553,13 +608,6 @@ void SplineFollower::shutdownCallback(const std_msgs::msg::Empty::SharedPtr msg)
 {
     RCLCPP_INFO(this->get_logger(), "Received shutdown signal.");
     shutdown_ = true;
-
-    if(state_ == SplineFollower::State::IDLE){
-        std::unique_lock<std::mutex> lock(mtx_);
-        // Set the flag and notify main thread
-        flag_received_ = true;
-        cv_.notify_one();
-    }
 }
 
 // Callback for debug subscriber to allow asynchronous state execution
@@ -589,4 +637,31 @@ void SplineFollower::waitForContinue()
     continue_cv_.wait(lock, [this]() { return continue_received_; });
 
     RCLCPP_INFO(this->get_logger(), "Continuing execution after signal.");
+}
+
+// Service sub callback
+void SplineFollower::serviceCallback(const std_msgs::msg::Empty::SharedPtr msg){
+    // Check if we are in the the Idle state otherwise send an error
+    if(state_ == State::IDLE){ 
+        state_ = State::SERVICE; // Update state to service
+        service_started_ = true; // Set flag to false to move wrist up
+    }
+    else if(state_ == State::SERVICE){ // If we are already in the service state and this request has been sent the service has been completed
+        state_ = State::INIT;
+    }
+    else{
+        std_msgs::msg::String msg; // Create a string message
+        msg.data = "Please wait. State must be IDLE to service the end effector.";
+        error_pub_->publish(msg); // Publish message
+    }
+}
+
+// Method for thread to publish state to the GUI
+void SplineFollower::statePublishingLoop() {
+    rclcpp::Rate rate(2.0);  // Publish state at 2 Hz
+
+    while (rclcpp::ok() && keep_publishing_state_) {
+        publishState();
+        rate.sleep();
+    }
 }

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libspline_follower_lib.a CMakeFiles/spline_follower_lib.dir/src/spline_follower.cpp.o
+/usr/bin/ranlib libspline_follower_lib.a
