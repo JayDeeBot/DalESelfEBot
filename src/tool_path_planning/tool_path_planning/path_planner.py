@@ -282,9 +282,9 @@ class PathPlanner: # handles path planning functionality
             print(f"Optimisation reduced path length by {reduction_percent:.2f}%")
             
             if reduction_percent >= 20:
-                print("Achieved at least 20% reduction in path length")
+                print("✓ Achieved at least 20% reduction in path length")
             else:
-                print("Did not achieve 20% reduction in path length")
+                print("✗ Did not achieve 20% reduction in path length")
         
         # Update paths with the optimised version
         self.paths = optimised_paths
