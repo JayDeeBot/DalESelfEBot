@@ -53,7 +53,7 @@ target_link_libraries(spline_follower_lib
 add_executable(spline_follower src/main.cpp)
 
 # Link the main executable with the library
-target_link_libraries(spline_follower spline_follower_lib)
+target_link_libraries(spline_follower spline_follower_lib Eigen3::Eigen)
 
 # Link dependencies for the main executable
 ament_target_dependencies(spline_follower

@@ -13,7 +13,7 @@ tooltip_offset_(0.108), service_started_(false), keep_publishing_state_(true) {
     // canvas_z_ = calculateAverageCanvasHeight();
     lifted_z_ = canvas_z_ + 0.05;
     // Initalise Publishers and Subscribers for communication with other subsystems
-    toolpath_sub_ = this->create_subscription<std_msgs::msg::Empty>("/toolpath", 10, std::bind(&SplineFollower::toolpath_sub_callback, this, std::placeholders::_1));
+    toolpath_sub_ = this->create_subscription<std_msgs::msg::String>("/toolpath", 10, std::bind(&SplineFollower::toolpath_sub_callback, this, std::placeholders::_1));
     error_pub_ = this->create_publisher<std_msgs::msg::String>("/control_error", 10);
     shutdown_sub_ = this->create_subscription<std_msgs::msg::Empty>("/shutdown", 10, std::bind(&SplineFollower::shutdownCallback, this, std::placeholders::_1));
     continue_sub_ = this->create_subscription<std_msgs::msg::Empty>("/continue_execution", 10, std::bind(&SplineFollower::continueCallback, this, std::placeholders::_1));
@@ -205,7 +205,7 @@ void SplineFollower::addInitObstacles(Eigen::Vector3d canvas_center, double canv
 
 // Load the testing splines from a json file
 bool SplineFollower::loadSplines() {
-    std::ifstream file("/home/jarred/git/DalESelfEBot/ur3_control/config/smiley_waypoints.json");
+    std::ifstream file("/home/jarred/ros2_ws/src/ur3_control/config/toolpath_saved.json");
     if (!file) {
         RCLCPP_ERROR(this->get_logger(), "Could not open spline JSON file.");
         return false;
@@ -325,10 +325,10 @@ double SplineFollower::calculateAverageCanvasHeight() {
     return (count > 0) ? (total_z / count - reduction) : 0.05;  // Return the average of the aggregate - Default to 50mm if something goes wrong
 }
 
-void SplineFollower::toolpath_sub_callback(const std_msgs::msg::Empty::SharedPtr msg){
+void SplineFollower::toolpath_sub_callback(const std_msgs::msg::String::SharedPtr msg){
 
     RCLCPP_INFO(this->get_logger(), "Received a new set of toolpaths.");
-    process_toolath_to_json();
+    process_toolpath_to_json(msg->data);
 
     // Load up the splines for drawing
     loadSplines();
@@ -339,11 +339,12 @@ void SplineFollower::toolpath_sub_callback(const std_msgs::msg::Empty::SharedPtr
 
     if (spline_data_["splines"].size() > 0){
         RCLCPP_INFO(this->get_logger(), "Recived new drawing.");
+
         // Generate border - Placed at the start of the queue
-        if(generateBorderSpline(x_offset, y_offset)) RCLCPP_ERROR(this->get_logger(), "Failed to generate border.");
+        if(!generateBorderSpline(x_offset, y_offset)) RCLCPP_ERROR(this->get_logger(), "Failed to generate border.");
 
         // Generate signature - Placed at the end of the queue
-        // if(!control->generateSignageSpline()) RCLCPP_ERROR(logger, "Failed to generate signature");
+        if(!generateSignageSpline()) RCLCPP_ERROR(this->get_logger(), "Signature spline failed to generate.");
 
         std::cout << "There are " << spline_data_["splines"].size() << " splines to draw." << std::endl;
         std::string filename = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/splines.csv";
@@ -356,8 +357,53 @@ void SplineFollower::toolpath_sub_callback(const std_msgs::msg::Empty::SharedPtr
     }
 }
 
-void SplineFollower::process_toolath_to_json(){
-    // Add logic here to process Amriths toolpath data into the json format used in ur3_control
+void SplineFollower::process_toolpath_to_json(const std::string& json_str) {
+    try {
+        json parsed = json::parse(json_str);
+
+        if (!parsed.contains("splines") || !parsed["splines"].is_array()) {
+            RCLCPP_ERROR(this->get_logger(), "Invalid toolpath JSON: no 'splines' array found.");
+            return;
+        }
+
+        json output_json;
+        output_json["splines"] = json::array();
+
+        for (const auto& spline : parsed["splines"]) {
+            json new_spline;
+            new_spline["id"] = spline["id"];
+            new_spline["waypoints"] = json::array();
+
+            for (const auto& point : spline["waypoints"]) {
+                if (!point.is_array() || (point.size() < 2)) {
+                    RCLCPP_WARN(this->get_logger(), "Skipping malformed waypoint.");
+                    continue;
+                }
+
+                double x = point[0].get<double>();
+                double y = point[1].get<double>();
+                double z = point.size() >= 3 ? point[2].get<double>() : 0.05;
+
+                new_spline["waypoints"].push_back({x, y, z});
+            }
+
+            output_json["splines"].push_back(new_spline);
+        }
+
+        std::ofstream out_file("/home/jarred/ros2_ws/src/ur3_control/config/toolpath_saved.json");
+        if (!out_file.is_open()) {
+            RCLCPP_ERROR(this->get_logger(), "Could not open file to write toolpath.");
+            return;
+        }
+
+        out_file << std::setw(4) << output_json << std::endl;
+        RCLCPP_INFO(this->get_logger(), "Toolpath JSON saved successfully with %zu splines.", output_json["splines"].size());
+
+    } catch (const json::parse_error& e) {
+        RCLCPP_ERROR(this->get_logger(), "Failed to parse toolpath JSON: %s", e.what());
+    } catch (const std::exception& e) {
+        RCLCPP_ERROR(this->get_logger(), "Error processing toolpath JSON: %s", e.what());
+    }
 }
 
 // Function to publish error message to GUI
@@ -545,61 +591,69 @@ void SplineFollower::exportSplineToCSV(const std::string& filename) {
     RCLCPP_INFO(this->get_logger(), "Exported all splines and localisation to %s", filename.c_str());
 }
 
-// Generate a DALE Signature in the botto left hand corner
+// Generate a DALE Signature in the bottom right hand corner
 bool SplineFollower::generateSignageSpline() {
-    // Choose a starting position in the lower left of the canvas
-    if (!spline_data_.contains("splines") || spline_data_["splines"].empty()) {
-        RCLCPP_ERROR(this->get_logger(), "No splines loaded. Please run loadSplines or generateBorderSpline first.");
+    // Load the YAML file with corner positions
+    YAML::Node config = YAML::LoadFile("/home/jarred/git/DalESelfEBot/ur3_localisation/config/params.yaml");
+    if (!config["corner_positions"] || config["corner_positions"].size() != 4) {
+        RCLCPP_ERROR(this->get_logger(), "Invalid or missing corner_positions in YAML.");
         return false;
     }
 
-    // Use the first corner to base the logo placement
-    const auto& base_point = spline_data_["splines"][0]["waypoints"][0];
-    double base_x = base_point[0];
-    double base_y = base_point[1];
-    double base_z = base_point[2];
-
-    // Scale for the size of the letters
-    double scale = 0.03; // 3 cm letters
-
-    // Offsets for a simple block "DALE" logo
-    std::vector<std::vector<std::vector<double>>> letters = {
-        // D
-        {
-            {0,0,0}, {0,1,0}, {0.5,1,0}, {0.6,0.9,0}, {0.6,0.1,0}, {0.5,0,0}, {0,0,0}
-        },
-        // A
-        {
-            {1.0,0,0}, {1.3,1.0,0}, {1.6,0,0}, {1.45,0.5,0}, {1.15,0.5,0}
-        },
-        // L
-        {
-            {2.0,1.0,0}, {2.0,0,0}, {2.5,0,0}
-        },
-        // E
-        {
-            {3.0,1.0,0}, {3.0,0,0}, {3.6,0,0}, {3.0,0.5,0}, {3.4,0.5,0}, {3.0,1.0,0}, {3.6,1.0,0}
-        }
-    };
-
-    // Shift and scale each letter
-    int next_id = spline_data_["splines"].size();
-    for (const auto& letter : letters) {
-        std::vector<std::vector<double>> wp;
-        for (const auto& p : letter) {
-            wp.push_back({
-                base_x + p[0] * scale,
-                base_y + p[1] * scale,
-                base_z
-            });
-        }
-        nlohmann::json spline;
-        spline["id"] = next_id++;
-        spline["waypoints"] = wp;
-        spline_data_["splines"].push_back(spline);
+    // Extract corners
+    std::vector<std::array<double, 3>> corners;
+    for (const auto& corner : config["corner_positions"]) {
+        double x = corner["x"].as<double>();
+        double y = corner["y"].as<double>();
+        double z = corner["z"].as<double>();
+        corners.push_back({x, y, z});
     }
 
-    RCLCPP_INFO(this->get_logger(), "Logo spline (DALE) added to spline data.");
+    // Use bottom-right corner as anchor
+    std::array<double, 3> anchor = corners[1];  // bottom-right
+
+    // Load signature splines
+    std::ifstream sigFile("/home/jarred/git/DalESelfEBot/ur3_control/signature/signature.json");
+    if (!sigFile.is_open()) {
+        RCLCPP_ERROR(this->get_logger(), "Failed to open signature JSON.");
+        return false;
+    }
+
+    nlohmann::json signatureData;
+    sigFile >> signatureData;
+
+    // Make sure spline_data_ contains a "splines" array
+    if (!spline_data_.contains("splines")) {
+        spline_data_["splines"] = nlohmann::json::array();
+    }
+
+    // Constants for offset within localised bottom right
+    double signage_offset_x = -0.05 - 0.07375;  // shift left from BR corner
+    double signage_offset_y = 0.15 - 0.10625;  // shift up from BR corner
+
+    double start_x = anchor[0] + signage_offset_x;
+    double start_y = anchor[1] + signage_offset_y;
+    double start_z = anchor[2];
+
+    // Append transformed splines to spline_data_
+    for (const auto& spline : signatureData["splines"]) {
+        nlohmann::json newSpline;
+        newSpline["id"] = spline_data_["splines"].size() + 1;
+        newSpline["waypoints"] = nlohmann::json::array();
+
+        for (const auto& wp : spline["waypoints"]) {
+            double x = wp[0];
+            double y = wp[1];
+            double tx = start_x + x;
+            double ty = start_y + y;
+            double tz = start_z;
+            newSpline["waypoints"].push_back({tx, ty, tz});
+        }
+
+        spline_data_["splines"].push_back(newSpline);
+    }
+
+    RCLCPP_INFO(this->get_logger(), "✔️ Signature appended to spline_data_ at bottom-right.");
     return true;
 }
 

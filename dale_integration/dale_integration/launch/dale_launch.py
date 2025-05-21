@@ -6,6 +6,7 @@ from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
 import os
 import yaml
+from launch.actions import TimerAction
 
 def generate_launch_description():
     # Path to the YAML configuration file
@@ -21,24 +22,6 @@ def generate_launch_description():
         raise RuntimeError(f"Failed to load 'ur_type' from YAML: {e}")
 
     return LaunchDescription([
-
-        # # UR Driver
-        # IncludeLaunchDescription(
-        #     PythonLaunchDescriptionSource([
-        #         PathJoinSubstitution([
-        #             FindPackageShare('ur_robot_driver'),
-        #             'launch',
-        #             'ur_control.launch.py'
-        #         ])
-        #     ]),
-        #     launch_arguments={
-        #         'ur_type': ur_type,
-        #         'robot_ip': ip_address,
-        #         'launch_rviz': 'true',
-        #         'kinematics_config': '/home/jarred/git/DalESelfEBot/GUI/calibration.yaml'
-        #     }.items()
-        # ),
-
         # Motion Planning (MoveIt config)
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([
@@ -49,6 +32,12 @@ def generate_launch_description():
                 ])
             ]),
             launch_arguments={'ur_type': ur_type, 'launch_rviz': 'false'}.items()
+        ),
+
+        # Pause for 5 seconds before starting the rest
+        TimerAction(
+            period=5.0,
+            actions=[]
         ),
 
         # Motion Execution (Control stack)
@@ -63,13 +52,22 @@ def generate_launch_description():
             launch_arguments={'ur_type': ur_type, 'launch_rviz': 'false'}.items()
         ),
 
-        # Image Processing Node
-        Node(
-            package='img_prc',
-            executable='image_processor',
-            name='image_processor',
-            output='screen'
+        # Image Processor Stack
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([
+                PathJoinSubstitution([
+                    FindPackageShare('img_prc'),
+                    'launch',
+                    'img_processor_launch.py'
+                ])
+            ])
         ),
 
-        # Additional nodes or launch files can be added here
+        # Toolpath Planner Node
+        Node(
+            package='tool_path_planning',
+            executable='tool_path_planner_node',
+            name='tool_path_planner_node',
+            output='screen'
+        ),
     ])

@@ -23,6 +23,8 @@
 #include <chrono>
 #include <thread>
 #include <atomic>
+#include <Eigen/Dense>
+#include <fstream>
 
 using json = nlohmann::json;
 
@@ -69,7 +71,7 @@ public:
     geometry_msgs::msg::Pose original_pose_;
 
     // Declare Publisher & Subscribers for communication with other subsystems
-    rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr toolpath_sub_; // Subscriber to listen for the toolpaths
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr toolpath_sub_; // Subscriber to listen for the toolpaths
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr error_pub_; // Publisher to communicate to the gui
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr state_pub_; // Publisher to send state to GUI
     rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr shutdown_sub_; // Subscriber to recieve a shutdown message
@@ -96,8 +98,8 @@ public:
     bool service_started_;
 
 private:
-    void toolpath_sub_callback(const std_msgs::msg::Empty::SharedPtr msg); // Toolpath Callback function
-    void process_toolath_to_json(); // Method to process toolpaths to json
+    void toolpath_sub_callback(const std_msgs::msg::String::SharedPtr msg); // Toolpath Callback function
+    void process_toolpath_to_json(const std::string& json_str); // Method to process toolpaths to json
     void shutdownCallback(const std_msgs::msg::Empty::SharedPtr msg); // Shutdown sub callback
     void continueCallback(const std_msgs::msg::Empty::SharedPtr msg); // Debug sub callback
     void serviceCallback(const std_msgs::msg::Empty::SharedPtr msg); // Service sub callback

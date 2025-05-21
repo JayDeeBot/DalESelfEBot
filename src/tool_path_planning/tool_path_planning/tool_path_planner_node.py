@@ -41,8 +41,8 @@ class ToolPathPlannerNode(Node):
         self.yaml_path = os.path.join(home_dir, 'ros2_ws', 'src', 'ur3_localisation', 'config', 'params.yaml')
         
         # Set up Canvas margins constants (inward from edges) (specified by Jarred)
-        self.x_margin_mm = 29.5  # mm inward from x-axis edges
-        self.y_margin_mm = 21.0  # mm inward from y-axis edges
+        self.x_margin_mm = 73.75*1.05  # mm inward from x-axis edges
+        self.y_margin_mm = 52.5*1.05  # mm inward from y-axis edges
         
         # Initialize a path planner instance
         self.path_planner = PathPlanner()

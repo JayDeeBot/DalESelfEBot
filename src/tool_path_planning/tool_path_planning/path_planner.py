@@ -83,8 +83,8 @@ class PathPlanner: # handles path planning functionality
         tl = canvas_corners[3]
         
         # margin adjustments (inward from edges) (converting from mm to m)
-        x_margin_m = 29.5 / 1000.0  # Convert mm to m
-        y_margin_m = 21.0 / 1000.0  # Convert mm to m
+        x_margin_m = 73.75*1.05 / 1000.0  # Convert mm to m
+        y_margin_m = 52.5*1.05 / 1000.0  # Convert mm to m
         
         # calculates which way the bottom and left edges of canvas are pointing
         bottom_vector = [br['x'] - bl['x'], br['y'] - bl['y']]

@@ -16,7 +16,7 @@ ifconfig
 # Turn on the Play Button (Bottom Right Corner)
 
 # Launch the Driver using the Robot IP
-ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur3e robot_ip:=192.168.0.194 launch_rviz:=true kinematics_config:="/home/jarred/git/DalESelfEBot/ur3_control/calibration/ur3e_calibration_4.yaml"
+ros2 launch ur_robot_driver ur_control.launch.py ur_type:=ur3e robot_ip:=192.168.0.191 launch_rviz:=true kinematics_config:="/home/jarred/git/DalESelfEBot/GUI/calibration.yaml.yaml"
 
 ###### ===== Now you are connected ===== #####
 
@@ -57,3 +57,11 @@ ros2 topic pub /shutdown std_msgs/msg/Empty -1
 # Publish Service Call
 
 ros2 topic pub /service_ee std_msgs/msg/Empty -1
+
+# Image Processor
+
+ros2 launch img_prc img_processor_launch.py
+
+# Toolpath Planner
+
+ros2 run tool_path_planning tool_path_planner_node
