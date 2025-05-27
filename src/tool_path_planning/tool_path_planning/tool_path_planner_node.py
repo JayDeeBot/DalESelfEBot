@@ -20,7 +20,7 @@ class ToolPathPlannerNode(Node):
     """ROS2 node for tool path planning in the Selfie-Drawing Robot project"""
     
     def __init__(self):
-        """Initialize the node"""
+        """Initialise the node"""
         super().__init__('tool_path_planner')
         
         # Set up CvBridge instance to convert between ROS images and OpenCV format
@@ -38,19 +38,19 @@ class ToolPathPlannerNode(Node):
         
         # Define path to localisation YAML using home directory
         home_dir = os.path.expanduser('~')
-        self.yaml_path = os.path.join(home_dir, 'ros2_ws', 'src', 'ur3_localisation', 'config', 'params.yaml')
+        self.yaml_path = os.path.join(home_dir, 'ros2_ws', 'src', 'DalESelfEBot', 'ur3_localisation', 'config', 'params.yaml')
         
         # Set up Canvas margins constants (inward from edges) (specified by Jarred)
         self.x_margin_mm = 73.75*1.05  # mm inward from x-axis edges
         self.y_margin_mm = 52.5*1.05  # mm inward from y-axis edges
         
-        # Initialize a path planner instance
+        # Initialise a path planner instance
         self.path_planner = PathPlanner()
         
-        # Initialize canvas corners
+        # Initialise canvas corners
         self.canvas_corners = None
         
-        self.get_logger().info('Tool Path Planner Node initialized')
+        self.get_logger().info('Tool Path Planner Node initialised')
     
     def load_canvas_corners(self):
         """Load canvas corner positions from YAML file"""
@@ -111,9 +111,9 @@ class ToolPathPlannerNode(Node):
             self.get_logger().info('Coordinate transformation complete')
             
             # 5. Optimize paths to minimize drawing time
-            self.get_logger().info('Optimizing paths to minimize drawing time...')
+            self.get_logger().info('Optimising paths to minimise drawing time...')
             optimized_paths = self.path_planner.optimise_paths()
-            self.get_logger().info('Path optimization complete')
+            self.get_logger().info('Path optimisation complete')
             
             # 6. Format paths as JSON for the control subsystem
             # Structure as per Jarred's requirements:
@@ -157,7 +157,7 @@ class ToolPathPlannerNode(Node):
             self.get_logger().error(f'Error in callback: {str(e)}')
 
 def main(args=None):
-    rclpy.init(args=args)  # Sets up ros2 initialization
+    rclpy.init(args=args)  # Sets up ros2 initialisation
     
     node = ToolPathPlannerNode()  # Creates an instance of the node
     
