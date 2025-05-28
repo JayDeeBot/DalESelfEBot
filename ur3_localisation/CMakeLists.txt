@@ -27,6 +27,9 @@ target_link_libraries(test1_four_locations_present GTest::gtest_main yaml-cpp)
 add_executable(test2_location_accuracy unit_testing/test2_location_accuracy.cpp)
 target_link_libraries(test2_location_accuracy GTest::gtest_main yaml-cpp)
 
+add_executable(integration_test_localisation_file_present unit_testing/integration_test_localisation_file_present.cpp)
+target_link_libraries(integration_test_localisation_file_present GTest::gtest_main yaml-cpp)
+
 # Link YAML-CPP explicitly
 target_link_libraries(localisation_node yaml-cpp Eigen3::Eigen)
 

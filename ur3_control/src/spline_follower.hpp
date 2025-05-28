@@ -77,6 +77,7 @@ public:
     rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr shutdown_sub_; // Subscriber to recieve a shutdown message
     rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr continue_sub_; // Debug subscriber to allow asynchronous state execution
     rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr service_sub_; // Subscriber to listen for a service request
+    rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr stop_drawing_; // Subscriber to listen for a request to stop drawing
 
     // Variables for shutting down the system
     bool shutdown_;
@@ -97,12 +98,20 @@ public:
     // Variables for servicing
     bool service_started_;
 
+    // Variables for stop drawing request
+    bool drawing_stopped_;
+
+    // Variables fetched from GUI Yaml
+    double z_penetration_;
+    double offset_scalar_;
+
 private:
     void toolpath_sub_callback(const std_msgs::msg::String::SharedPtr msg); // Toolpath Callback function
     void process_toolpath_to_json(const std::string& json_str); // Method to process toolpaths to json
     void shutdownCallback(const std_msgs::msg::Empty::SharedPtr msg); // Shutdown sub callback
     void continueCallback(const std_msgs::msg::Empty::SharedPtr msg); // Debug sub callback
     void serviceCallback(const std_msgs::msg::Empty::SharedPtr msg); // Service sub callback
+    void stopDrawingCallback(const std_msgs::msg::Empty::SharedPtr msg); // Stop drawing sub callback
     void addInitObstacles(Eigen::Vector3d canvas_center, double canvas_x, double canvas_y);
     void publishState();
 
@@ -110,6 +119,8 @@ private:
     std::atomic_bool keep_publishing_state_;
     
     void statePublishingLoop();  // Function for the thread
+
+    void updateControlVariables();
 };
 
 #endif  // SPLINE_FOLLOWER_HPP

@@ -4,8 +4,8 @@
 
 TEST(FourLocationsTest, ValidFormat) {
     // Load the YAML file
-    // YAML::Node config = YAML::LoadFile("/home/jarred/git/DalESelfEBot/ur3_localisation/config/sim_params.yaml"); // Use for simulation testing
-    YAML::Node config = YAML::LoadFile("/home/jarred/git/DalESelfEBot/ur3_localisation/config/hardware_params.yaml"); // Use for hardware testing
+    YAML::Node config = YAML::LoadFile("/home/jarred/git/DalESelfEBot/ur3_localisation/config/sim_params.yaml"); // Use for simulation testing
+    // YAML::Node config = YAML::LoadFile("/home/jarred/git/DalESelfEBot/ur3_localisation/config/hardware_params.yaml"); // Use for hardware testing
 
     // Check if 'corner_positions' exists and is a sequence
     ASSERT_TRUE(config["corner_positions"]) << "'corner_positions' key is missing.";

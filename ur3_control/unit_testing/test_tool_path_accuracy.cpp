@@ -24,11 +24,11 @@ std::vector<Waypoint> load_waypoints(const std::string& filepath) {
 
 TEST(ToolPathAccuracyTest, XYMatchedWithinTolerance) {
     // Use for simulation testing
-    // const std::string expected_path = "/home/jarred/git/DalESelfEBot/ur3_control/config/sim_circle_waypoints.json";
-    // const std::string actual_path = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/sim_ground_truth.json";
+    const std::string expected_path = "/home/jarred/git/DalESelfEBot/ur3_control/config/sim_circle_waypoints.json";
+    const std::string actual_path = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/sim_ground_truth.json";
     // Use for hardware testing
-    const std::string expected_path = "/home/jarred/git/DalESelfEBot/ur3_control/config/hardware_circle_waypoints.json";
-    const std::string actual_path = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/hardware_ground_truth.json";
+    // const std::string expected_path = "/home/jarred/git/DalESelfEBot/ur3_control/config/hardware_circle_waypoints.json";
+    // const std::string actual_path = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/hardware_ground_truth.json";
 
     auto expected_waypoints = load_waypoints(expected_path);
     auto actual_waypoints = load_waypoints(actual_path);

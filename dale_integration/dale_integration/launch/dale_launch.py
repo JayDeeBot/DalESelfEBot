@@ -17,7 +17,7 @@ def generate_launch_description():
         with open(config_path, 'r') as file:
             config = yaml.safe_load(file)
             ur_type = config['robot']['ur_type']
-            ip_address = config['robot']['ip_address']
+            camera_index = config['robot']['camera_index']
     except Exception as e:
         raise RuntimeError(f"Failed to load 'ur_type' from YAML: {e}")
 
@@ -60,7 +60,8 @@ def generate_launch_description():
                     'launch',
                     'img_processor_launch.py'
                 ])
-            ])
+            ]),
+            launch_arguments={'camera_index': camera_index}.items()
         ),
 
         # Toolpath Planner Node

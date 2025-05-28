@@ -45,6 +45,7 @@ int main(int argc, char * argv[])
     unsigned int RETRIES = 0;
 
     bool isIdle = false;
+    bool lifted = true;
 
     // Enter state machine for drawing lifecylce
     while (rclcpp::ok()) {
@@ -62,6 +63,9 @@ int main(int argc, char * argv[])
         if(control->shutdown_){
             control->state_ = SplineFollower::State::STOP;
         }
+        // If we recieve a stop drawing signal and the pen is lifted we go idle
+        if(control->drawing_stopped_ && lifted) control->state_ = SplineFollower::State::IDLE, control->drawing_stopped_ = false;
+
         switch (control->state_) {
             // State init: Moves to a safe start pose using the path planner.
             case SplineFollower::State::INIT:
@@ -243,6 +247,7 @@ int main(int argc, char * argv[])
                     control->state_ = SplineFollower::State::MOVE_THROUGH_DRAWING_TRAJECTORY;
 
                     RETRIES = 0; // Ensure retries resets to zero
+                    lifted = false;
                 }
                 
                 break;
@@ -332,6 +337,7 @@ int main(int argc, char * argv[])
                         RCLCPP_INFO(logger, "Moved off canvas.");
                         control->state_ = SplineFollower::State::MOVE_TO_INTERMEDIATE_POS;
                         RETRIES = 0; // Ensure retries is reset to 0
+                        lifted = true;
                     } else { // If all splines are completed move to stop state
                         RCLCPP_INFO(logger, "All splines completed.");
                         control->state_ = SplineFollower::State::IDLE;

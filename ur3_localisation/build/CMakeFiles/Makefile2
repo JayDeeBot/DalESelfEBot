@@ -66,6 +66,7 @@ CMAKE_BINARY_DIR = /home/jarred/git/DalESelfEBot/ur3_localisation/build
 all: CMakeFiles/localisation_node.dir/all
 all: CMakeFiles/test1_four_locations_present.dir/all
 all: CMakeFiles/test2_location_accuracy.dir/all
+all: CMakeFiles/integration_test_localisation_file_present.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -78,6 +79,7 @@ clean: CMakeFiles/ur3_localisation_uninstall.dir/clean
 clean: CMakeFiles/localisation_node.dir/clean
 clean: CMakeFiles/test1_four_locations_present.dir/clean
 clean: CMakeFiles/test2_location_accuracy.dir/clean
+clean: CMakeFiles/integration_test_localisation_file_present.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -139,7 +141,7 @@ CMakeFiles/ur3_localisation_uninstall.dir/clean:
 CMakeFiles/localisation_node.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/localisation_node.dir/build.make CMakeFiles/localisation_node.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/localisation_node.dir/build.make CMakeFiles/localisation_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles --progress-num=1,2 "Built target localisation_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles --progress-num=3,4 "Built target localisation_node"
 .PHONY : CMakeFiles/localisation_node.dir/all
 
 # Build rule for subdir invocation for target.
@@ -165,7 +167,7 @@ CMakeFiles/localisation_node.dir/clean:
 CMakeFiles/test1_four_locations_present.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test1_four_locations_present.dir/build.make CMakeFiles/test1_four_locations_present.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test1_four_locations_present.dir/build.make CMakeFiles/test1_four_locations_present.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles --progress-num=3,4 "Built target test1_four_locations_present"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles --progress-num=5,6 "Built target test1_four_locations_present"
 .PHONY : CMakeFiles/test1_four_locations_present.dir/all
 
 # Build rule for subdir invocation for target.
@@ -191,7 +193,7 @@ CMakeFiles/test1_four_locations_present.dir/clean:
 CMakeFiles/test2_location_accuracy.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test2_location_accuracy.dir/build.make CMakeFiles/test2_location_accuracy.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test2_location_accuracy.dir/build.make CMakeFiles/test2_location_accuracy.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles --progress-num=5,6 "Built target test2_location_accuracy"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles --progress-num=7,8 "Built target test2_location_accuracy"
 .PHONY : CMakeFiles/test2_location_accuracy.dir/all
 
 # Build rule for subdir invocation for target.
@@ -209,6 +211,32 @@ test2_location_accuracy: CMakeFiles/test2_location_accuracy.dir/rule
 CMakeFiles/test2_location_accuracy.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test2_location_accuracy.dir/build.make CMakeFiles/test2_location_accuracy.dir/clean
 .PHONY : CMakeFiles/test2_location_accuracy.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/integration_test_localisation_file_present.dir
+
+# All Build rule for target.
+CMakeFiles/integration_test_localisation_file_present.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/integration_test_localisation_file_present.dir/build.make CMakeFiles/integration_test_localisation_file_present.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/integration_test_localisation_file_present.dir/build.make CMakeFiles/integration_test_localisation_file_present.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles --progress-num=1,2 "Built target integration_test_localisation_file_present"
+.PHONY : CMakeFiles/integration_test_localisation_file_present.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/integration_test_localisation_file_present.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/integration_test_localisation_file_present.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles 0
+.PHONY : CMakeFiles/integration_test_localisation_file_present.dir/rule
+
+# Convenience name for target.
+integration_test_localisation_file_present: CMakeFiles/integration_test_localisation_file_present.dir/rule
+.PHONY : integration_test_localisation_file_present
+
+# clean rule for target.
+CMakeFiles/integration_test_localisation_file_present.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/integration_test_localisation_file_present.dir/build.make CMakeFiles/integration_test_localisation_file_present.dir/clean
+.PHONY : CMakeFiles/integration_test_localisation_file_present.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

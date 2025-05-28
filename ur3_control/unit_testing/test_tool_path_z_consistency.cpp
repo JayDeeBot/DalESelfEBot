@@ -37,12 +37,12 @@ std::vector<double> load_z_values_from_ground_truth(const std::string& json_path
 }
 
 TEST(ToolPathZTest, ZWithinTolerance) {
-    // const std::string reference_yaml = "/home/jarred/git/DalESelfEBot/ur3_localisation/config/sim_params.yaml";
-    const std::string reference_yaml = "/home/jarred/git/DalESelfEBot/ur3_localisation/config/hardware_params_2.yaml";
+    const std::string reference_yaml = "/home/jarred/git/DalESelfEBot/ur3_localisation/config/sim_params.yaml";
+    // const std::string reference_yaml = "/home/jarred/git/DalESelfEBot/ur3_localisation/config/hardware_params_2.yaml";
     // Use for simulation testing
-    // const std::string path_json = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/sim_ground_truth.json";
+    const std::string path_json = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/sim_ground_truth.json";
     // Use for hardware testing
-    const std::string path_json = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/hardware_ground_truth.json";
+    // const std::string path_json = "/home/jarred/git/DalESelfEBot/ur3_control/scripts/hardware_ground_truth.json";
     
     double expected_z = compute_average_z_from_yaml(reference_yaml);
     auto actual_z_values = load_z_values_from_ground_truth(path_json);

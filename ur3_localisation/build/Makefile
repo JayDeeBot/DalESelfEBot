@@ -236,6 +236,19 @@ test2_location_accuracy/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test2_location_accuracy.dir/build.make CMakeFiles/test2_location_accuracy.dir/build
 .PHONY : test2_location_accuracy/fast
 
+#=============================================================================
+# Target rules for targets named integration_test_localisation_file_present
+
+# Build rule for target.
+integration_test_localisation_file_present: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 integration_test_localisation_file_present
+.PHONY : integration_test_localisation_file_present
+
+# fast build rule for target.
+integration_test_localisation_file_present/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/integration_test_localisation_file_present.dir/build.make CMakeFiles/integration_test_localisation_file_present.dir/build
+.PHONY : integration_test_localisation_file_present/fast
+
 src/localisation_node.o: src/localisation_node.cpp.o
 .PHONY : src/localisation_node.o
 
@@ -259,6 +272,30 @@ src/localisation_node.s: src/localisation_node.cpp.s
 src/localisation_node.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/localisation_node.dir/build.make CMakeFiles/localisation_node.dir/src/localisation_node.cpp.s
 .PHONY : src/localisation_node.cpp.s
+
+unit_testing/integration_test_localisation_file_present.o: unit_testing/integration_test_localisation_file_present.cpp.o
+.PHONY : unit_testing/integration_test_localisation_file_present.o
+
+# target to build an object file
+unit_testing/integration_test_localisation_file_present.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/integration_test_localisation_file_present.dir/build.make CMakeFiles/integration_test_localisation_file_present.dir/unit_testing/integration_test_localisation_file_present.cpp.o
+.PHONY : unit_testing/integration_test_localisation_file_present.cpp.o
+
+unit_testing/integration_test_localisation_file_present.i: unit_testing/integration_test_localisation_file_present.cpp.i
+.PHONY : unit_testing/integration_test_localisation_file_present.i
+
+# target to preprocess a source file
+unit_testing/integration_test_localisation_file_present.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/integration_test_localisation_file_present.dir/build.make CMakeFiles/integration_test_localisation_file_present.dir/unit_testing/integration_test_localisation_file_present.cpp.i
+.PHONY : unit_testing/integration_test_localisation_file_present.cpp.i
+
+unit_testing/integration_test_localisation_file_present.s: unit_testing/integration_test_localisation_file_present.cpp.s
+.PHONY : unit_testing/integration_test_localisation_file_present.s
+
+# target to generate assembly for a file
+unit_testing/integration_test_localisation_file_present.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/integration_test_localisation_file_present.dir/build.make CMakeFiles/integration_test_localisation_file_present.dir/unit_testing/integration_test_localisation_file_present.cpp.s
+.PHONY : unit_testing/integration_test_localisation_file_present.cpp.s
 
 unit_testing/test1_four_locations_present.o: unit_testing/test1_four_locations_present.cpp.o
 .PHONY : unit_testing/test1_four_locations_present.o
@@ -323,12 +360,16 @@ help:
 	@echo "... test"
 	@echo "... uninstall"
 	@echo "... ur3_localisation_uninstall"
+	@echo "... integration_test_localisation_file_present"
 	@echo "... localisation_node"
 	@echo "... test1_four_locations_present"
 	@echo "... test2_location_accuracy"
 	@echo "... src/localisation_node.o"
 	@echo "... src/localisation_node.i"
 	@echo "... src/localisation_node.s"
+	@echo "... unit_testing/integration_test_localisation_file_present.o"
+	@echo "... unit_testing/integration_test_localisation_file_present.i"
+	@echo "... unit_testing/integration_test_localisation_file_present.s"
 	@echo "... unit_testing/test1_four_locations_present.o"
 	@echo "... unit_testing/test1_four_locations_present.i"
 	@echo "... unit_testing/test1_four_locations_present.s"

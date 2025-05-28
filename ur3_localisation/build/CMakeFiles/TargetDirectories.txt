@@ -3,6 +3,7 @@
 /home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles/localisation_node.dir
 /home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles/test1_four_locations_present.dir
 /home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles/test2_location_accuracy.dir
+/home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles/integration_test_localisation_file_present.dir
 /home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles/test.dir
 /home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles/edit_cache.dir
 /home/jarred/git/DalESelfEBot/ur3_localisation/build/CMakeFiles/rebuild_cache.dir

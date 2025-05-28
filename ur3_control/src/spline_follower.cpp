@@ -7,7 +7,7 @@ using json = nlohmann::json;
 
 // Constructor - init member variables: Node name to: spline_follower, state starts in init and initial spline index is 0
 SplineFollower::SplineFollower() : Node("spline_follower"), state_(State::INIT), current_spline_index_(0), shutdown_(false), 
-tooltip_offset_(0.108), service_started_(false), keep_publishing_state_(true) {
+tooltip_offset_(0.108), service_started_(false), keep_publishing_state_(true), drawing_stopped_(false), offset_scalar_(1.0), z_penetration_(0.0) {
     RCLCPP_INFO(this->get_logger(), "SplineFollower node created.");
     canvas_z_ = calculateAverageCanvasHeight() + tooltip_offset_;
     // canvas_z_ = calculateAverageCanvasHeight();
@@ -19,7 +19,7 @@ tooltip_offset_(0.108), service_started_(false), keep_publishing_state_(true) {
     continue_sub_ = this->create_subscription<std_msgs::msg::Empty>("/continue_execution", 10, std::bind(&SplineFollower::continueCallback, this, std::placeholders::_1));
     service_sub_ = this->create_subscription<std_msgs::msg::Empty>("/service_ee", 10, std::bind(&SplineFollower::serviceCallback, this, std::placeholders::_1));
     state_pub_ = this->create_publisher<std_msgs::msg::String>("/control_state", 10);
-
+    stop_drawing_ = this->create_subscription<std_msgs::msg::Empty>("/stop_drawing", 10, std::bind(&SplineFollower::stopDrawingCallback, this, std::placeholders::_1));
     // Start the state publishing thread
     state_pub_thread_ = std::thread(&SplineFollower::statePublishingLoop, this);
 }
@@ -317,12 +317,36 @@ double SplineFollower::calculateAverageCanvasHeight() {
         count++;
     }
 
-    // double reduction = 0.003; // Reduce z value by 3 mm
-    double reduction = 0.0;
+    std::cout << "Average canvas height = " << total_z / count - z_penetration_ << std::endl;
 
-    std::cout << "Average canvas height = " << total_z / count - reduction << std::endl;
+    return (count > 0) ? (total_z / count - z_penetration_) : 0.05;  // Return the average of the aggregate - Default to 50mm if something goes wrong
+}
 
-    return (count > 0) ? (total_z / count - reduction) : 0.05;  // Return the average of the aggregate - Default to 50mm if something goes wrong
+void SplineFollower::updateControlVariables() {
+    try {
+        YAML::Node config = YAML::LoadFile("/home/jarred/git/DalESelfEBot/GUI/params.yaml");
+
+        if (config["robot"]) {
+            YAML::Node robot = config["robot"];
+
+            if (robot["offset_scalar"]) {
+                offset_scalar_ = robot["offset_scalar"].as<double>();
+            } else {
+                RCLCPP_WARN(this->get_logger(), "offset_scalar not found in YAML. Using default: %f", offset_scalar_);
+            }
+
+            if (robot["z_penetration"]) {
+                z_penetration_ = robot["z_penetration"].as<double>();
+            } else {
+                RCLCPP_WARN(this->get_logger(), "z_penetration not found in YAML. Using default: %f", z_penetration_);
+            }
+
+        } else {
+            RCLCPP_WARN(this->get_logger(), "robot node not found in YAML. Control variables not updated.");
+        }
+    } catch (const YAML::Exception &e) {
+        RCLCPP_ERROR(this->get_logger(), "Failed to load or parse params.yaml: %s", e.what());
+    }
 }
 
 void SplineFollower::toolpath_sub_callback(const std_msgs::msg::String::SharedPtr msg){
@@ -333,9 +357,11 @@ void SplineFollower::toolpath_sub_callback(const std_msgs::msg::String::SharedPt
     // Load up the splines for drawing
     loadSplines();
 
-    // Generate border - Placed at the start of the queue
-    double x_offset = 0.07375; // x offset
-    double y_offset = 0.0525; // y offset
+    updateControlVariables();
+
+    // Set border offsets
+    double x_offset = 0.07375*offset_scalar_; // x offset
+    double y_offset = 0.0525*offset_scalar_; // y offset
 
     if (spline_data_["splines"].size() > 0){
         RCLCPP_INFO(this->get_logger(), "Recived new drawing.");
@@ -411,10 +437,10 @@ void SplineFollower::sendError(bool drawing_incomplete) {
     std_msgs::msg::String msg; // Create a string message
 
     if(drawing_incomplete){ // If the drawing was not completed advise to retake the selfie
-        msg.data = "Control Failed! The toolpaths could not be completed. Please retake the selfie.";
+        msg.data = "Control Failed!";
     }
     else{ // If the drawing was completed advise to return robot home manually
-        msg.data = "Control Failed! The toolpaths were completed. Please return robot to the upright posistion manually.";
+        msg.data = "Control Failed!";
     }
     error_pub_->publish(msg); // Publish message
 }
@@ -707,6 +733,16 @@ void SplineFollower::serviceCallback(const std_msgs::msg::Empty::SharedPtr msg){
         std_msgs::msg::String msg; // Create a string message
         msg.data = "Please wait. State must be IDLE to service the end effector.";
         error_pub_->publish(msg); // Publish message
+    }
+}
+
+// Stop Drawing sub callback
+void SplineFollower::stopDrawingCallback(const std_msgs::msg::Empty::SharedPtr msg){
+    drawing_stopped_ = true;
+    if(state_ == State::IDLE){
+        drawing_stopped_ = false;
+        updateControlVariables();
+        state_ = State::MOVE_TO_INTERMEDIATE_POS;
     }
 }
 

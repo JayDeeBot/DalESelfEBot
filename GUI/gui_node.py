@@ -20,13 +20,8 @@ import subprocess
 import os
 import traceback
 import yaml # For Set Robot IP
-import launch
-import launch_ros
-from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import PathJoinSubstitution
-from launch_ros.substitutions import FindPackageShare
+from controller_manager_msgs.srv import ListControllers
+import pathlib
 
 ## Setup Image Processor Action Client ##
 # Try to import the action definition
@@ -67,7 +62,7 @@ class GuiNode(Node):
 
         script_dir = os.path.dirname(os.path.abspath(__file__))
         project_main_folder = os.path.dirname(script_dir)
-        self.params_file_path = os.path.join(project_main_folder, "/home/jarred/git/DalESelfEBot/GUI/params.yaml")
+        self.params_file_path = str(pathlib.Path(__file__).resolve().parent / "params.yaml")
         self.get_logger().info(f"Parameters YAML file path set to: {self.params_file_path}")
 
         self.pixel_map_publisher = self.create_publisher(Image, '/pixel_map', 10)
@@ -89,6 +84,29 @@ class GuiNode(Node):
         else:
             self._action_client = None
             self.get_logger().error("Img action type not available. Action client NOT created.")
+
+        self.control_state = "Unknown"
+        self.control_state_lock = threading.Lock()
+        self.control_state_subscription = self.create_subscription(
+            RosString, '/control_state', self.control_state_callback, 10)
+        self.get_logger().info("Subscribed to /control_state")
+        self.controller_active = False
+        self.controller_lock = threading.Lock()
+        self.stop_drawing_publisher = self.create_publisher(Empty, '/stop_drawing', 10)
+
+    def publish_stop_drawing(self):
+        try:
+            msg = Empty()
+            self.stop_drawing_publisher.publish(msg)
+            self.get_logger().info("Published Empty message to /stop_drawing")
+            return True
+        except Exception as e:
+            self.get_logger().error(f"Failed to publish to /stop_drawing: {e}\n{traceback.format_exc()}")
+            return False
+
+    def control_state_callback(self, msg):
+        with self.control_state_lock:
+            self.control_state = msg.data
 
     ## ------- Image Processor Section --------- ##
     def webcam_callback(self, msg):
@@ -318,7 +336,7 @@ class GuiNode(Node):
 
     def get_robot_info_from_yaml(self):
         try:
-            with open("params.yaml", "r") as file:  # Replace with actual path
+            with open(self.params_file_path, "r") as file:
                 config = yaml.safe_load(file)
             robot_ip = config["robot"]["ip_address"]
             ur_type = config["robot"]["ur_type"]
@@ -327,42 +345,71 @@ class GuiNode(Node):
             return None, None, str(e)
 
     def launch_ur_system(self):
-        if self.ur_system_process and self.ur_system_process.poll() is None:
-            self.get_logger().warn("UR system (ur_control.launch.py) might already be running.")
-            return False, "UR system might already be running."
-
         robot_ip, ur_type, msg = self.get_robot_info_from_yaml()
         if not robot_ip or not ur_type:
-            self.get_logger().error(f"Cannot launch UR system: {msg}")
+            self.get_logger().error(f"Cannot generate command: {msg}")
             return False, f"Failed to get robot info: {msg}"
 
-        kinematics_config_path = "calibration.yaml"
+        kinematics_config_path = "/home/jarred/git/DalESelfEBot/GUI/calibration.yaml"
         if not os.path.exists(kinematics_config_path):
-            err_msg = f"Kinematics config file not found: {kinematics_config_path}. Please update the path in the script (GuiNode.launch_ur_system)."
+            err_msg = f"Kinematics config file not found: {kinematics_config_path}. Please update the path."
             self.get_logger().error(err_msg)
             return False, err_msg
 
-        command = [
-            'ros2', 'launch', 'ur_robot_driver', 'ur_control.launch.py',
-            f'ur_type:={ur_type}',
-            f'robot_ip:={robot_ip}',
-            'launch_rviz:=true',
-            f'kinematics_config:={kinematics_config_path}'
-        ]
-        try:
-            current_env = os.environ.copy()
-            self.ur_system_process = subprocess.Popen(command, env=current_env)
-            self.get_logger().info(f"Launched UR system command: {' '.join(command)}")
-            return True, "Launched UR system (ur_control.launch.py)."
-        except FileNotFoundError:
-            err_msg = "Error: 'ros2 launch' command not found or 'ur_robot_driver' package not found. Is ROS 2 environment sourced and package installed?"
-            self.get_logger().error(err_msg)
-            self.ur_system_process = None
-            return False, err_msg
-        except Exception as e:
-            self.get_logger().error(f"Failed to launch UR system: {e}\n{traceback.format_exc()}")
-            self.ur_system_process = None
-            return False, f"Failed to launch UR system: {e}"
+        command_str = (
+            f"ros2 launch ur_robot_driver ur_control.launch.py \\\n"
+            f"  ur_type:={ur_type} \\\n"
+            f"  robot_ip:={robot_ip} \\\n"
+            f"  launch_rviz:=true \\\n"
+            f"  kinematics_params_file:={kinematics_config_path}"
+        )
+
+        # Show the command in a GUI window
+        self.show_command_popup("UR System Launch Command", command_str)
+
+        return True, "Command displayed. Please run it manually in a terminal."
+    
+    def show_command_popup(self, title, command_text):
+        popup = tk.Toplevel()
+        popup.title(title)
+        popup.geometry("750x300")
+        popup.configure(bg="#555555")
+        popup.transient()
+        popup.grab_set()
+
+        tk.Label(popup, text="Copy the command below and paste it into a new terminal:",
+                bg="#555555", fg="white", font=("Arial", 11)).pack(pady=(10, 5))
+
+        # Use Text widget for selection and scrollbar
+        text_frame = tk.Frame(popup, bg="#555555")
+        text_frame.pack(padx=10, pady=(0, 10), fill=tk.BOTH, expand=True)
+
+        scrollbar = tk.Scrollbar(text_frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        text_widget = tk.Text(text_frame, height=10, wrap="none", bg="#1e1e1e", fg="white",
+                            insertbackground="white", font=("Courier", 10), yscrollcommand=scrollbar.set)
+        text_widget.insert(tk.END, command_text)
+        text_widget.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.config(command=text_widget.yview)
+
+        text_widget.bind("<Control-a>", lambda e: (text_widget.tag_add("sel", "1.0", "end"), "break"))  # Ctrl+A to select all
+        text_widget.config(state=tk.NORMAL)  # Keep selectable (not DISABLED)
+
+        def copy_to_clipboard():
+            popup.clipboard_clear()
+            popup.clipboard_append(command_text)
+            popup.update()
+            tk.messagebox.showinfo("Copied", "Command copied to clipboard.", parent=popup)
+
+        button_frame = tk.Frame(popup, bg="#555555")
+        button_frame.pack(pady=(0, 10))
+
+        tk.Button(button_frame, text="Copy to Clipboard", command=copy_to_clipboard,
+                bg="#303030", fg="white", activebackground="#454545", relief=tk.FLAT, width=20).pack(side=tk.LEFT, padx=5)
+
+        tk.Button(button_frame, text="Close", command=popup.destroy,
+                bg="#303030", fg="white", activebackground="#454545", relief=tk.FLAT, width=10).pack(side=tk.LEFT, padx=5)
 
     def launch_dale_integration(self):
         if self.dale_integration_process and self.dale_integration_process.poll() is None:
@@ -502,11 +549,34 @@ class ActionViewerApp(tk.Tk):
     def __init__(self, ros_node):
         super().__init__()
         self.ros_node = ros_node
+
+        # Track whether drawing is currently stopped
+        self.is_drawing_stopped = False  # Initially, drawing is active
+
         self.settings_window, self.localisation_window = None, None
-        self.title("DalESelfEBot GUI"); self.geometry("1040x640"); self.minsize(800, 500)
+        self.title("DalESelfEBot GUI")
+        self.geometry("1040x640")
+        self.minsize(800, 500)
         self.dark_grey, self.text_color, self.error_text_color = "#404040", "white", "red"
         self.config(bg=self.dark_grey)
         self.running, self.display_mode, self.last_processed_frame_available = True, "live", False
+
+        # ----- TOP STATUS BAR -----
+        self.info_frame = tk.Frame(self, bg=self.dark_grey)
+        self.info_frame.pack(side=tk.TOP, fill=tk.X, pady=(5, 0))
+
+        self.connection_canvas = tk.Canvas(self.info_frame, width=20, height=20, highlightthickness=0, bg=self.dark_grey)
+        self.connection_canvas.pack(side=tk.LEFT, padx=(10, 5))
+        self.connection_circle = self.connection_canvas.create_oval(2, 2, 18, 18, fill="gray")
+
+        self.connection_label = tk.Label(self.info_frame, text="Unknown", bg=self.dark_grey, fg="white", font=("Arial", 11))
+        self.connection_label.pack(side=tk.LEFT)
+
+        self.state_label = tk.Label(self.info_frame, text="Control State: Unknown", font=("Arial", 12, "bold"),
+                                    bg=self.dark_grey, fg="white", anchor="center")
+        self.state_label.pack(side=tk.LEFT, padx=20)
+
+        # ----- MAIN VIEW FRAMES -----
         self.top_frame = tk.Frame(self, bg=self.dark_grey)
         self.processed_display_frame = tk.Frame(self, bg=self.dark_grey)
         self.control_frame = tk.Frame(self, bg=self.dark_grey)
@@ -526,25 +596,124 @@ class ActionViewerApp(tk.Tk):
 
         btn_sfr = tk.Frame(self.control_frame, bg=self.dark_grey)
         btn_sfr.pack(side=tk.LEFT, padx=5)
-        btn_cfg = {"bg": "#303030", "fg": self.text_color, "activebackground":"#454545", "relief":FLAT, "borderwidth":0, "highlightthickness":0}
+
+        # ✅ Define button styling config first
+        btn_cfg = {
+            "bg": "#303030", "fg": self.text_color,
+            "activebackground": "#454545", "relief": FLAT,
+            "borderwidth": 0, "highlightthickness": 0
+        }
+
+        # Control Buttons
+        self.stop_button = tk.Button(btn_sfr, text="Stop Drawing", width=15, command=self.on_stop_drawing_click, **btn_cfg)
+        self.stop_button.pack(side=tk.LEFT, padx=5)
+
         self.capture_button = tk.Button(btn_sfr, text="Capture Image", width=15, command=self.on_capture_button_click, **btn_cfg)
-        self.capture_button.pack(side=tk.LEFT, padx=(0,5))
+        self.capture_button.pack(side=tk.LEFT, padx=(0, 5))
+
         self.draw_button = tk.Button(btn_sfr, text="Draw", width=10, command=self.on_draw_button_click, state=DISABLED, **btn_cfg)
         self.draw_button.pack(side=tk.LEFT, padx=5)
+
         self.settings_button = tk.Button(self.control_frame, text="Settings", width=10, command=self.open_settings_window, **btn_cfg)
         self.settings_button.pack(side=tk.RIGHT, padx=5)
+
         msg_bars = tk.Frame(self.control_frame, bg=self.dark_grey)
         msg_bars.pack(side=tk.LEFT, padx=10, fill=tk.X, expand=True)
         self.status_label = tk.Label(msg_bars, text="Initializing...", anchor='w', bg=self.dark_grey, fg=self.text_color)
-        self.status_label.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0,5))
+        self.status_label.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 5))
         self.error_status_label = tk.Label(msg_bars, text="", anchor='w', bg=self.dark_grey, fg=self.error_text_color)
-        self.error_status_label.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(5,0))
+        self.error_status_label.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(5, 0))
 
         self.control_frame.pack(side=tk.BOTTOM, fill=tk.X, pady=5, padx=5)
         self.top_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=5, pady=5)
+
         self.update_thread = threading.Thread(target=self.update_image_display, daemon=True)
-        self.update_thread.start(); print("GUI update thread started.")
+        self.update_thread.start()
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+        # Threads for connection and control state
+        self.connection_check_thread = threading.Thread(target=self.connection_monitor_loop, daemon=True)
+        self.connection_check_thread.start()
+
+        self.state_update_thread = threading.Thread(target=self.update_control_state_loop, daemon=True)
+        self.state_update_thread.start()
+
+        # Placeholder to track Dale System button reference for enable/disable logic
+        self.launch_dale_system_button = None
+
+    def on_stop_drawing_click(self):
+        self.ros_node.get_logger().info("Stop/Restart Drawing button clicked.")
+        
+        success = self.ros_node.publish_stop_drawing()
+        
+        if success:
+            if self.is_drawing_stopped:
+                # Currently stopped → restarting drawing
+                self.is_drawing_stopped = False
+                self.stop_button.config(text="Stop Drawing")
+                self.status_label.config(text="Restart Drawing signal sent.")
+                self.ros_node.get_logger().info("Restart Drawing command issued.")
+            else:
+                # Currently active → stopping drawing
+                self.is_drawing_stopped = True
+                self.stop_button.config(text="Restart Drawing")
+                self.status_label.config(text="Stop Drawing signal sent.")
+                self.ros_node.get_logger().info("Stop Drawing command issued.")
+        else:
+            messagebox.showerror("Publish Error", "Failed to send stop/restart drawing signal.", parent=self)
+
+    def update_control_state_loop(self):
+        while self.running and rclpy.ok():
+            with self.ros_node.control_state_lock:
+                state = self.ros_node.control_state
+            self.after(0, self.state_label.config, {"text": f"Control State: {state}"})
+            time.sleep(1.0)
+
+    def connection_monitor_loop(self):
+        client = self.ros_node.create_client(ListControllers, '/controller_manager/list_controllers')
+
+        while self.running and rclpy.ok():
+            if not client.wait_for_service(timeout_sec=1.0):
+                self.ros_node.get_logger().warn("Waiting for /controller_manager/list_controllers service...")
+                time.sleep(1.0)
+                continue
+
+            req = ListControllers.Request()
+            future = client.call_async(req)
+            rclpy.spin_until_future_complete(self.ros_node, future, timeout_sec=1.0)
+
+            is_active = False
+            if future.done() and future.result() is not None:
+                for controller in future.result().controller:
+                    if (controller.name == "scaled_joint_trajectory_controller"
+                            and controller.state == "active"):
+                        is_active = True
+                        break
+            else:
+                self.ros_node.get_logger().warn("Failed to get controller list or service returned nothing.")
+
+            # Store active state safely
+            with self.ros_node.controller_lock:
+                self.ros_node.controller_active = is_active
+
+            # Update GUI connection indicator
+            self.after(0, self.update_connection_status, is_active)
+
+            time.sleep(2.0)
+
+    def update_connection_status(self, connected: bool):
+        color = "green" if connected else "red"
+        text = "Connected" if connected else "Disconnected"
+        self.connection_canvas.itemconfig(self.connection_circle, fill=color)
+        self.connection_label.config(text=text)
+
+        # Disable/enable the Draw button
+        if hasattr(self, 'draw_button') and self.draw_button.winfo_exists():
+            self.draw_button.config(state=tk.NORMAL if connected and self.last_processed_frame_available else tk.DISABLED)
+
+        # Disable/enable the Launch Dale System button
+        if hasattr(self, 'launch_dale_system_button') and self.launch_dale_system_button.winfo_exists():
+            self.launch_dale_system_button.config(state=tk.NORMAL if connected else tk.DISABLED)
 
     def open_settings_window(self):
         if self.settings_window and self.settings_window.winfo_exists():
@@ -577,7 +746,9 @@ class ActionViewerApp(tk.Tk):
         tk.Button(s_fr, text="Localise Canvas", **btn_cfg, command=self.on_localise_canvas_click).pack(pady=8)
 
         # 5. Launch Dale System ("launch system")
-        tk.Button(s_fr, text="Launch Dale System", **btn_cfg, command=self.on_launch_dale_system_click).pack(pady=8)
+        self.launch_dale_system_button = tk.Button(s_fr, text="Launch Dale System", **btn_cfg, command=self.on_launch_dale_system_click)
+        self.launch_dale_system_button.pack(pady=8)
+
 
         # 6. Service End Effector
         self.service_ee_button = tk.Button(s_fr, text="Service End Effector", **btn_cfg, command=self.on_service_ee_click)
@@ -905,6 +1076,8 @@ class ActionViewerApp(tk.Tk):
                         if self.draw_button.cget('state') != new_draw_button_state:
                             self.draw_button.config(state=new_draw_button_state)
 
+            with self.ros_node.controller_lock:
+                self.after(0, self.update_connection_status, self.ros_node.controller_active)
             self.last_processed_frame_available=proc_avail
             time.sleep(0.05)
         self.ros_node.get_logger().info("GUI update loop finished.")
